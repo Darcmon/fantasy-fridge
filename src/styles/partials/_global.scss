@@ -1,0 +1,24 @@
+@use './mixins';
+@use './fonts';
+@use './variables' as *;
+
+
+* {
+    font-family: 'Titillium Web', sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    
+}
+*:before, *:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+.page-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    // position: relative;
+    height: 100vh;
+}

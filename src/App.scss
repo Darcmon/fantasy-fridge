@@ -1,0 +1,11 @@
+@use "./styles/partials/mixins";
+@use "./styles/partials/variables";
+@use "./styles/partials/fonts";
+@use "./styles/partials/global";
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
