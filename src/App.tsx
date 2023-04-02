@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, RouteComponentProps, Route } from 'react-router-dom';
+import { Routes, Route, useParams } from 'react-router-dom';
 
 import AuthRoute from './components/AuthRoute/AuthRoute';
 import { auth } from './config/firebase-config';
@@ -31,20 +31,26 @@ const App: React.FC<IAppProps> = props => {
 
     return (
         <div>
-            <Switch>
-                {routes.map((route, index) => 
-                    <Route
-                        key={index}
-                        path={route.path} 
-                        exact={route.exact} 
-                        render={(routeProps: RouteComponentProps<any>) => {
-                            if (route.protected)
-                                return <AuthRoute><route.component  {...routeProps} /></AuthRoute>;
-
-                            return <route.component  {...routeProps} />;
-                        }}
-                    />)}
-            </Switch>
+            <Routes>
+                {routes.map((route, index) => {
+                    const Component = route.component;
+                    return (
+                        <Route
+                            key={index}
+                            path={route.path}
+                            element={
+                                route.protected ? (
+                                    <AuthRoute>
+                                        <Component />
+                                    </AuthRoute>
+                                ) : (
+                                    <Component />
+                                )
+                            }
+                        />
+                    );
+                })}
+            </Routes>
         </div>
     );
 }

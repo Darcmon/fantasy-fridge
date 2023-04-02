@@ -1,7 +1,7 @@
 import IRoute from "../interfaces/route";
-// import LoginPage from "../pages/auth/login";
-// import LogoutPage from "../pages/auth/logout";
-// import RegisterPage from "../pages/auth/register";
+import LoginPage from "../pages/auth/Login"
+import LogoutPage from "../pages/auth/Logout";
+import RegisterPage from "../pages/auth/Register";
 import HomePage from "../pages/Home"
 
 const routes: IRoute[] = [
@@ -12,27 +12,27 @@ const routes: IRoute[] = [
         name: 'Home Page',
         protected: true
     },
-    // {
-    //     path: '/register',
-    //     exact: true,
-    //     component: RegisterPage,
-    //     name: 'Register Page',
-    //     protected: false
-    // },
-    // {
-    //     path: '/login',
-    //     exact: true,
-    //     component: LoginPage,
-    //     name: 'Login Page',
-    //     protected: false
-    // },
-    // {
-    //     path: '/logout',
-    //     exact: true,
-    //     component: LogoutPage,
-    //     name: 'Logout Page',
-    //     protected: true
-    // },
+    {
+        path: '/register',
+        exact: true,
+        component: RegisterPage,
+        name: 'Register Page',
+        protected: false
+    },
+    {
+        path: '/login',
+        exact: true,
+        component: LoginPage,
+        name: 'Login Page',
+        protected: false
+    },
+    {
+        path: '/logout',
+        exact: true,
+        component: LogoutPage,
+        name: 'Logout Page',
+        protected: true
+    },
 ];
 
 export default routes;
