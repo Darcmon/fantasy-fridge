@@ -4,3 +4,11 @@ export default interface IPageProps {
         uid: string;
     };
 }
+
+export default interface FridgeProps {
+    
+}
+
+export default interface IngredientsProps {
+    
+}

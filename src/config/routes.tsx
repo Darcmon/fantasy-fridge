@@ -3,6 +3,8 @@ import LoginPage from "../pages/auth/Login"
 import LogoutPage from "../pages/auth/Logout";
 import RegisterPage from "../pages/auth/Register";
 import HomePage from "../pages/Home"
+import Fridge from "../pages/Fridge";
+import Ingredients from "../pages/Ingredients";
 
 const routes: IRoute[] = [
     {
@@ -33,6 +35,21 @@ const routes: IRoute[] = [
         name: 'Logout Page',
         protected: true
     },
+    {
+        path: '/fridge',
+        exact: true,
+        component: Fridge,
+        name: 'My Fridge',
+        protected: true
+    },
+    {
+        path: '/ingredients',
+        exact: true,
+        component: Ingredients,
+        name: 'Ingredients',
+        protected: true
+    },
+    
 ];
 
 export default routes;

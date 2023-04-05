@@ -85,9 +85,9 @@ const HomePage: React.FC<IPageProps> = (props) => {
         Click <Link to="/logout">here</Link> to logout.
       </p>
 
-      UID: <p>{user.uid}</p>
+      <h1>Hello</h1><p>{user.uid}</p>
       
-      Fridge: <p>{firestoreData}</p>
+      <h2>Fridge:</h2> {firestoreData ? <p>{firestoreData}</p> : <p>No items in your Fridge</p>}
       <p>
       {instructions}
       </p>
