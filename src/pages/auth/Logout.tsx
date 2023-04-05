@@ -4,6 +4,7 @@ import AuthContainer from '../../components/AuthContainer/AuthContainer';
 import { auth } from '../../config/firebase-config';
 import logging from '../../config/logging';
 import IPageProps from '../../interfaces/page';
+import { Button } from '@mui/material';
 
 const LogoutPage: React.FC<IPageProps> = props => {
 
@@ -18,8 +19,8 @@ const LogoutPage: React.FC<IPageProps> = props => {
         <AuthContainer header="Logout">
             <p className='text-center'>Are you sure you want to logout?</p>
             <div className='text-center'>
-                <button color="danger" className="mr-2" onClick={() => navigate(-1)}>Cancel</button>
-                <button color="info" className="mr-2" onClick={() => Logout()}>Logout</button>
+                <Button variant="outlined" color='primary' onClick={() => navigate(-1)}>Cancel</Button>
+                <Button variant="contained" color="error" onClick={() => Logout()}>Logout</Button>
             </div>
         </AuthContainer>
     );

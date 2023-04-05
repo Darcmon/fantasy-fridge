@@ -7,7 +7,7 @@ import logging from '../../config/logging';
 import IPageProps from '../../interfaces/page';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-const RegisterPage: React.FunctionComponent<IPageProps> = props => {
+const RegisterPage: React.FC<IPageProps> = props => {
     const [registering, setRegistering] = useState<boolean>(false);
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');

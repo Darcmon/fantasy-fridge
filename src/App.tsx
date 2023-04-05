@@ -37,7 +37,9 @@ const App: React.FC<IAppProps> = (props) => {
               element={
                 route.protected ? (
                   <AuthRoute>
-                    <Component />
+                    <Component
+                    user = {auth.currentUser}
+                    />
                   </AuthRoute>
                 ) : (
                   <Component />
