@@ -10,5 +10,9 @@ export default interface FridgeProps {
 }
 
 export default interface IngredientsProps {
-    
+    searchData: [{
+        name: string;
+        image: string;
+        key: string;
+    }];
 }

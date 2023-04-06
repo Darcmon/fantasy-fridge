@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, useParams } from "react-router-dom";
-
+import { MantineProvider, Text } from '@mantine/core';
 import AuthRoute from "./components/AuthRoute/AuthRoute";
 import { auth } from "./config/firebase-config";
 import logging from "./config/logging";
@@ -27,6 +27,7 @@ const App: React.FC<IAppProps> = (props) => {
 
   return (
     <div>
+      <MantineProvider withGlobalStyles withNormalizeCSS>
       <Routes>
         {routes.map((route, index) => {
           const Component = route.component;
@@ -49,6 +50,7 @@ const App: React.FC<IAppProps> = (props) => {
           );
         })}
       </Routes>
+      </MantineProvider>
     </div>
   );
 };
