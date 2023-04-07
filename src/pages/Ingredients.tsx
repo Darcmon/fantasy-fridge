@@ -1,9 +1,10 @@
 import React from "react";
 import { db } from "../config/firebase-config";
-import { collection, getDocs, setDoc, doc } from "firebase/firestore";
-import IngredientsProps from "../interfaces/page";
+import { collection, getDocs, setDoc, doc, deleteDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import KitchenIcon from "@mui/icons-material/Kitchen";
+import { User } from "firebase/auth";
+import { DocumentData } from "firebase/firestore";
 import {
   TextInput,
   TextInputProps,
@@ -14,11 +15,22 @@ import {
 } from "@mantine/core";
 import { IconSearch, IconArrowRight, IconArrowLeft } from "@tabler/icons-react";
 
+interface Ingredient extends DocumentData {
+  id: number;
+  name: string;
+  image: string;
+}
+
+
+interface IngredientsProps {
+  user: User;
+}
+
 const Ingredients: React.FC<IngredientsProps> = (props) => {
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
 
-  const [firestoreData, setFirestoreData] = React.useState([]);
-  const [fridgeAdd, setFridgeAdd] = React.useState(false);
+  const [firestoreData, setFirestoreData] = React.useState<Ingredient[]>([]);
+  const [fridgeEdit, setFridgeEdit] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
   const [searchQuery, setSearchQuery] = React.useState("");
   const [searchData, setSearchData] = React.useState([]);
@@ -29,59 +41,69 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
 
   const userFridgeRef = collection(db, "users", user.uid, "fridge");
 
+
   const updateSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
 
-  const getSearch = (e) => {
+  const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setSearchQuery(searchValue);
-    console.log(searchValue);
-  }
-
-  const getIngredients = async () => {
-    
-        const data = await fetch(`https://api.spoonacular.com/food/ingredients/search?query=${searchQuery}&number=15&sortDirection=desc&apiKey=${API_KEY}`)
-        const json = await data.json()
-        console.log(json);
-        setSearchData(json.results)
   };
 
-  const addFridge = async (name, image, id) => {
-    console.log(name);
-    await setDoc(doc(userFridgeRef), { name, image, id });
-    fridgeAdd ? setFridgeAdd(false) : setFridgeAdd(true);
-};
+  const getIngredients = async () => {
+    const data = await fetch(
+      `https://api.spoonacular.com/food/ingredients/search?query=${searchQuery}&number=15&sortDirection=desc&apiKey=${API_KEY}`
+    );
+    const json = await data.json();
+    console.log(json);
+    setSearchData(json.results);
+  };
+
+  // const addFridge = async (item) => {
+  //   const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
+  //   const userFridgeItemDocRef = doc(userFridgeItemRef, item.id);
+  //   console.log(item.name, item.image, item.id);
+    
+  //   await setDoc(userFridgeItemDocRef, {item });
+  //   fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
+  // };
+
+  const addFridge = async (item: Ingredient) => {
+    const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
+    const userFridgeItemDocRef = doc(userFridgeItemRef, item.id.toString());
+    console.log(item.name, item.image, item.id);
+  
+    await setDoc(userFridgeItemDocRef, item); // <-- change here
+    fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
+  };
+
+  const removeFridge = async (id: string) => {
+    const userFridgeItemRef = doc(db, "users", user.uid, "fridge", id);
+
+    await deleteDoc(userFridgeItemRef);
+    fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
+  };
 
   React.useEffect(() => {
     async function fetchData() {
       const querySnapshot = await getDocs(userFridgeRef);
       console.log(querySnapshot);
-      let dbData = [];
+      let dbData: Ingredient[] = [];
       querySnapshot.docs.forEach((doc) => {
-        console.log(dbData);
-        dbData.push(doc.data());
-        setFirestoreData(dbData);
+        dbData.push(doc.data() as Ingredient);
       });
+      console.log(dbData);
+      setFirestoreData(dbData);
+      // setFirestoreData(querySnapshot.docs.map((doc) => doc.data() as Ingredient));
     }
     fetchData();
-
-  }, [fridgeAdd]);
-
-//   React.useEffect(() => {
-//     async function createData() {
-//       const querySnapshot = await setDoc(doc(userFridgeRef), {
-
-//       });
-//       console.log(querySnapshot);
-//       let dbData = [];
-//     }
-//     createData();
-//   });
+  }, [fridgeEdit]);
 
   React.useEffect(() => {
     getIngredients();
   }, [searchQuery]);
+
 
   return (
     <>
@@ -112,48 +134,67 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
         {...props}
       />
 
-        <h2>My Fridge</h2>
-        {firestoreData.map((item) => {
-            return (
-              <>
-                <p>{item.name}</p>
-                <img
-                  src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}
-                />
-                <Group>
-                  <Button
-                    onClick={addFridge}
-                    leftIcon={<KitchenIcon />}
-                  ></Button>
-                  <Button>-</Button>
-                  <Button>+</Button>
-                </Group>
-              </>
-            );
-        })
-        }
+      <h2>My Fridge</h2>
+      {firestoreData.map((item: Ingredient) => {
+        const filteredData = firestoreData.filter(firestoreItem => firestoreItem.id === item.id);
+        return (
+          <>
+            <p>{item.name} {item.id}</p>
+            <img
+              src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}
+              alt={`${item.name} picture`}
+            />
+            <Group>
+              {filteredData.length > 0 ? (
+                <Button
+                color="red"
+                onClick={() => removeFridge(item.id.toString())}
+                leftIcon={<KitchenIcon />}
+              >Rm</Button>
+              ) : (
+                <Button
+                  onClick={() => addFridge(item)}
+                  leftIcon={<KitchenIcon />}
+                >Add</Button>
+              )}
+              <Button>-</Button>
+              <Button>+</Button>
+            </Group>
+          </>
+        );
+      })}
 
-        <h2>Search Results</h2>
-        {searchData.map((item) => {
-            return (
-              <>
-                <p>{item.name}</p>
-                <img
-                  src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}
-                />
-                <Group>
-                  <Button
-                    onClick={() => addFridge(item.name, item.image, item.id)}
-                    leftIcon={<KitchenIcon />}
-                  ></Button>
-                  <Button>-</Button>
-                  <Button>+</Button>
-                </Group>
-              </>
-            );
-        })
-        }
+      <h2>Search Results</h2>
+      {searchData.map((item: Ingredient) => {
+        const filteredData = firestoreData.filter(firestoreItem => firestoreItem.id === item.id);
 
+        return (
+          <>
+            <p>{item.name} {item.id}</p>
+
+            <img
+              src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}
+              alt={`${item.name} picture`}
+            />
+            <Group>
+              {filteredData.length > 0 ? (
+                <Button
+                color="red"
+                onClick={() => removeFridge(item.id.toString())}
+                leftIcon={<KitchenIcon />}
+              >Rm</Button>
+              ) : (
+                <Button
+                  onClick={() => addFridge(item)}
+                  leftIcon={<KitchenIcon />}
+                >Add</Button>
+              )}
+              <Button>-</Button>
+              <Button>+</Button>
+            </Group>
+          </>
+        );
+      })}
     </>
   );
 };

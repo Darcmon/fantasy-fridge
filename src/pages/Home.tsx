@@ -3,15 +3,12 @@ import { Link } from "react-router-dom";
 import { db } from "../config/firebase-config";
 import { collection, getDocs } from "firebase/firestore";
 import IPageProps from "../interfaces/page";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import FoodBankIcon from "@mui/icons-material/FoodBank";
-import KitchenIcon from "@mui/icons-material/Kitchen";
-import EggIcon from "@mui/icons-material/Egg";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
+// import BottomNavigation from "@mui/material/BottomNavigation";
+// import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+// import FoodBankIcon from "@mui/icons-material/FoodBank";
+// import KitchenIcon from "@mui/icons-material/Kitchen";
+// import EggIcon from "@mui/icons-material/Egg";
+// import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 
 
@@ -22,9 +19,9 @@ const HomePage: React.FC<IPageProps> = (props) => {
   const { user } = props;
   console.log(user.uid);
   
-  React.useEffect(() => {
-    (ref.current as HTMLDivElement).ownerDocument.body.scrollTop = 0;
-  }, [value]);
+  // React.useEffect(() => {
+  //   (ref.current as HTMLDivElement).ownerDocument.body.scrollTop = 0;
+  // }, [value]);
 
   // Spoonacular API
   const [instructions, setInstructions] = React.useState("");
@@ -77,25 +74,18 @@ const HomePage: React.FC<IPageProps> = (props) => {
   console.log(firestoreData);
   
   return (
-    <Box sx={{ pb: 7 }} ref={ref}>
-      <CssBaseline />
+    <>
+    <div>
       <p>Welcome to this page that is protected by Firebase</p>
 
-      <p>
-        Click <Link to="/logout">here</Link> to logout.
-      </p>
+      <p>Click <Link to="/logout">here</Link> to logout.</p>
 
       <h1>Hello</h1><p>{user.uid}</p>
       
       <h2>Fridge:</h2> {firestoreData ? <p>{firestoreData}</p> : <p>No items in your Fridge</p>}
-      <p>
-      {instructions}
-      </p>
-      <Paper
-        sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
-        elevation={3}
-      >
-        <BottomNavigation
+      <p>{instructions}</p>
+      </div>
+        {/* <BottomNavigation
           showLabels
           value={value}
           onChange={(event, newValue) => {
@@ -106,9 +96,8 @@ const HomePage: React.FC<IPageProps> = (props) => {
           <BottomNavigationAction label="Fridge" icon={<KitchenIcon />} />
           <BottomNavigationAction label="Ingredients" icon={<EggIcon />} />
           <BottomNavigationAction label="Cook" icon={<MenuBookIcon />} />
-        </BottomNavigation>
-      </Paper>
-    </Box>
+        </BottomNavigation> */}
+        </>
   );
 };
 
