@@ -78,7 +78,7 @@ const HomePage: React.FC<IPageProps> = (props) => {
 
       <p>Click <Link to="/logout">here</Link> to logout.</p>
 
-      <h1>Hello</h1><p>{user.uid}</p>
+      <h1>Hello</h1><p>{user.email}</p>
 
       <h2>Fridge:</h2> {firestoreData ? null : <p>No items in your Fridge</p>}
       <MyFridge user={user}/>
