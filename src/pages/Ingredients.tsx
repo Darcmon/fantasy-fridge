@@ -4,7 +4,8 @@ import { collection, getDocs, setDoc, doc, deleteDoc } from "firebase/firestore"
 import { useParams } from "react-router-dom";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
-import { DocumentData } from "firebase/firestore";
+import Ingredient from "../interfaces/page";
+
 import {
   TextInput,
   TextInputProps,
@@ -14,13 +15,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { IconSearch, IconArrowRight, IconArrowLeft } from "@tabler/icons-react";
-
-interface Ingredient extends DocumentData {
-  id: number;
-  name: string;
-  image: string;
-}
-
+// import MyFridge from "../components/MyFridge/MyFridge";
 
 interface IngredientsProps {
   user: User;
@@ -41,7 +36,6 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
 
   const userFridgeRef = collection(db, "users", user.uid, "fridge");
 
-
   const updateSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
@@ -60,21 +54,12 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
     setSearchData(json.results);
   };
 
-  // const addFridge = async (item) => {
-  //   const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
-  //   const userFridgeItemDocRef = doc(userFridgeItemRef, item.id);
-  //   console.log(item.name, item.image, item.id);
-    
-  //   await setDoc(userFridgeItemDocRef, {item });
-  //   fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
-  // };
-
   const addFridge = async (item: Ingredient) => {
     const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
     const userFridgeItemDocRef = doc(userFridgeItemRef, item.id.toString());
     console.log(item.name, item.image, item.id);
   
-    await setDoc(userFridgeItemDocRef, item); // <-- change here
+    await setDoc(userFridgeItemDocRef, item);
     fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
   };
 
@@ -133,7 +118,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
         value={searchValue}
         {...props}
       />
-
+      {/* <MyFridge user={user}/> */}
       <h2>My Fridge</h2>
       {firestoreData.map((item: Ingredient) => {
         const filteredData = firestoreData.filter(firestoreItem => firestoreItem.id === item.id);

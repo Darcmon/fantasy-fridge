@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { db } from "../config/firebase-config";
 import { collection, getDocs } from "firebase/firestore";
+import MyFridge from "../components/MyFridge/MyFridge";
+import { User } from "firebase/auth";
+
 // import BottomNavigation from "@mui/material/BottomNavigation";
 // import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 // import FoodBankIcon from "@mui/icons-material/FoodBank";
@@ -11,9 +14,7 @@ import { collection, getDocs } from "firebase/firestore";
 
 interface IPageProps {
   name: string;
-  user: {
-      uid: string;
-  };
+  user: User;
 }
 
 const HomePage: React.FC<IPageProps> = (props) => {
@@ -21,7 +22,6 @@ const HomePage: React.FC<IPageProps> = (props) => {
   const [value, setValue] = React.useState(0);
   const ref = React.useRef<HTMLDivElement>(null);
   const { user } = props;
-  console.log(user.uid);
   
   // React.useEffect(() => {
   //   (ref.current as HTMLDivElement).ownerDocument.body.scrollTop = 0;
@@ -34,7 +34,6 @@ const HomePage: React.FC<IPageProps> = (props) => {
       const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=1&addRecipeInformation=true&instructionsRequired=true&query=chicken`)
       
       const json = await data.json()
-      console.log(json);
       setInstructions(JSON.stringify(json.results[0].analyzedInstructions[0].steps))
     }
     fetchData()
@@ -63,19 +62,14 @@ const HomePage: React.FC<IPageProps> = (props) => {
   React.useEffect(() => {
   async function fetchData() {
     const querySnapshot = await getDocs(userFridgeRef);
-    console.log(querySnapshot);
     
     querySnapshot.docs.forEach((doc) => {
-      console.log(doc.data());
       
       setFirestoreData(JSON.stringify(doc.data()));
     });
   }
   fetchData()
 }, []);
-
-
-  console.log(firestoreData);
   
   return (
     <>
@@ -85,23 +79,12 @@ const HomePage: React.FC<IPageProps> = (props) => {
       <p>Click <Link to="/logout">here</Link> to logout.</p>
 
       <h1>Hello</h1><p>{user.uid}</p>
-      
-      <h2>Fridge:</h2> {firestoreData ? <p>{firestoreData}</p> : <p>No items in your Fridge</p>}
-      <p>{instructions}</p>
-      </div>
-        {/* <BottomNavigation
-          showLabels
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-          }}
-        >
-          <BottomNavigationAction label="Home" icon={<FoodBankIcon />} />
-          <BottomNavigationAction label="Fridge" icon={<KitchenIcon />} />
-          <BottomNavigationAction label="Ingredients" icon={<EggIcon />} />
-          <BottomNavigationAction label="Cook" icon={<MenuBookIcon />} />
-        </BottomNavigation> */}
-        </>
+
+      <h2>Fridge:</h2> {firestoreData ? null : <p>No items in your Fridge</p>}
+      <MyFridge user={user}/>
+    </div>
+    
+    </>
   );
 };
 
