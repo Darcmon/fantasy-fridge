@@ -138,7 +138,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
       {firestoreData.map((item: Ingredient) => {
         const filteredData = firestoreData.filter(firestoreItem => firestoreItem.id === item.id);
         return (
-          <>
+          <div key={item.id}>
             <p>{item.name} {item.id}</p>
             <img
               src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}
@@ -160,7 +160,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
               <Button>-</Button>
               <Button>+</Button>
             </Group>
-          </>
+          </div>
         );
       })}
 

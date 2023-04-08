@@ -4,7 +4,7 @@ import AuthContainer from '../../components/AuthContainer/AuthContainer';
 import { auth } from '../../config/firebase-config';
 import logging from '../../config/logging';
 import IPageProps from '../../interfaces/page';
-import { Button } from '@mui/material';
+import { Button } from '@mantine/core';
 
 const LogoutPage: React.FC<IPageProps> = props => {
 

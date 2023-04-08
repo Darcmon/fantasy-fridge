@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { db } from "../config/firebase-config";
 import { collection, getDocs } from "firebase/firestore";
-import IPageProps from "../interfaces/page";
 // import BottomNavigation from "@mui/material/BottomNavigation";
 // import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 // import FoodBankIcon from "@mui/icons-material/FoodBank";
@@ -10,7 +9,12 @@ import IPageProps from "../interfaces/page";
 // import EggIcon from "@mui/icons-material/Egg";
 // import MenuBookIcon from "@mui/icons-material/MenuBook";
 
-
+interface IPageProps {
+  name: string;
+  user: {
+      uid: string;
+  };
+}
 
 const HomePage: React.FC<IPageProps> = (props) => {
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
