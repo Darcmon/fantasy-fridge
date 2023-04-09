@@ -7,6 +7,12 @@ export default interface Ingredient extends DocumentData {
     image: string;
   }
 
+  export default interface Recipe extends DocumentData {
+    id: number;
+    title: string;
+    image: string;
+  }
+
 export default interface FridgeProps {
     
 }

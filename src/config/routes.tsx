@@ -5,6 +5,7 @@ import RegisterPage from "../pages/auth/Register";
 import HomePage from "../pages/Home"
 import Fridge from "../pages/Fridge";
 import Ingredients from "../pages/Ingredients";
+import Recipes from "../pages/Recipes";
 
 const routes: IRoute[] = [
     {
@@ -49,6 +50,27 @@ const routes: IRoute[] = [
         name: 'Ingredients',
         protected: true
     },
+    {
+        path: '/ingredients/:id',
+        exact: true,
+        component: Ingredients,
+        name: 'Ingredient',
+        protected: true
+    },
+    {
+        path: '/recipes',
+        exact: true,
+        component: Recipes,
+        name: 'Recipes',
+        protected: true
+    },
+    {
+        path: '/recipes/:id',
+        exact: true,
+        component: Recipes,
+        name: 'Recipe',
+        protected: true
+    }
     
 ];
 

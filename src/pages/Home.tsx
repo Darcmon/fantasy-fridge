@@ -19,13 +19,8 @@ interface IPageProps {
 
 const HomePage: React.FC<IPageProps> = (props) => {
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
-  const [value, setValue] = React.useState(0);
-  const ref = React.useRef<HTMLDivElement>(null);
-  const { user } = props;
   
-  // React.useEffect(() => {
-  //   (ref.current as HTMLDivElement).ownerDocument.body.scrollTop = 0;
-  // }, [value]);
+  const { user } = props;
 
   // Spoonacular API
   const [instructions, setInstructions] = React.useState("");
@@ -38,22 +33,6 @@ const HomePage: React.FC<IPageProps> = (props) => {
     }
     fetchData()
   })
-
-  // Firestore API GROUP
-  // const [firestoreGroupData, setFirestoreGroupData] = React.useState("");
-  // const fridgeRef = collectionGroup(db, "fridge");
-  // const userRef = collection(db, "users");
-  // React.useEffect(() => {
-  //   async function fetchData() {
-  //     const querySnapshot = await getDocs(fridgeRef);
-  //     console.log(querySnapshot);
-      
-  //     querySnapshot.docs.forEach((doc) => {
-  //       setFirestoreGroupData(JSON.stringify(doc.data()));
-  //     });
-  //   }
-  //   fetchData()
-  // }, []);
 
   // Firestore API single get
   const userFridgeRef = collection(db, "users", user.uid, "fridge");
@@ -78,9 +57,9 @@ const HomePage: React.FC<IPageProps> = (props) => {
 
       <p>Click <Link to="/logout">here</Link> to logout.</p>
 
-      <h1>Hello</h1><p>{user.email}</p>
+      <h1>Hello</h1>{user.email === null ? <h1>Guest</h1> : <h1>{user.email}</h1>}
 
-      <h2>Fridge:</h2> {firestoreData ? null : <p>No items in your Fridge</p>}
+      <h2>Fantasy Fridge:</h2> {firestoreData ? null : <p>No items in your Fridge</p>}
       <MyFridge user={user}/>
     </div>
     
