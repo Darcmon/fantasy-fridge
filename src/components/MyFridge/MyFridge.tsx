@@ -18,11 +18,12 @@ interface MyFridgeProps {
   firestoreData: Ingredient[];
   addFridge: (item: Ingredient) => void;
   removeFridge: (id: string) => void;
+  updateFridge: (id: string, name: string) => void;
 }
 
 const MyFridge: React.FC<MyFridgeProps> = (props) => {
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
-  const { addFridge, removeFridge, firestoreData } = props;
+  const { addFridge, removeFridge, firestoreData, updateFridge } = props;
 
   // const userFridgeRef = collection(db, "users", user.uid, "fridge");
 
@@ -73,13 +74,17 @@ const MyFridge: React.FC<MyFridgeProps> = (props) => {
             />
             <Group>
               {filteredData.length > 0 ? (
-                <Button
-                  color="red"
-                  onClick={() => removeFridge(item.id.toString())}
-                  leftIcon={<KitchenIcon />}
-                >
-                  Rm
-                </Button>
+                <>
+                  <Button
+                    color="red"
+                    onClick={() => removeFridge(item.id.toString())}
+                    leftIcon={<KitchenIcon />}
+                  >
+                    Rm
+                  </Button>
+                  <Button onClick={() => updateFridge(item.id.toString(), 'subtract')} name='subtract' >-</Button>
+                  <Button onClick={() => updateFridge(item.id.toString(), 'add')} name='add'>+</Button>
+                </>
               ) : (
                 <Button
                   onClick={() => addFridge(item)}
@@ -88,8 +93,6 @@ const MyFridge: React.FC<MyFridgeProps> = (props) => {
                   Add
                 </Button>
               )}
-              <Button>-</Button>
-              <Button>+</Button>
             </Group>
           </div>
         );

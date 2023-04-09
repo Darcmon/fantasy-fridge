@@ -6,6 +6,8 @@ import {
   setDoc,
   doc,
   deleteDoc,
+  updateDoc,
+  increment,
 } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import KitchenIcon from "@mui/icons-material/Kitchen";
@@ -58,10 +60,25 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
 
   const addFridge = async (item: Ingredient) => {
     const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
-    const userFridgeItemDocRef = doc(userFridgeItemRef, item.id.toString());
-    console.log(item.name, item.image, item.id);
 
-    await setDoc(userFridgeItemDocRef, item);
+    const userFridgeItemDocRef = doc(userFridgeItemRef, item.id.toString());
+
+    await setDoc(userFridgeItemDocRef, {item, quantity: 0});
+  };
+
+  const updateFridge = async (id: string, name: string) => {
+    const userFridgeItemQtyRef = collection(db, "users", user.uid, "fridge");
+    const userFridgeItemQtyDocRef = doc(userFridgeItemQtyRef, id.toString());
+
+    if (name === 'subtract') {
+      // decrease the quantity of the item in the fridge
+      await updateDoc(userFridgeItemQtyDocRef, {quantity: increment(-1)});
+    } else if (name === 'add') {
+      // increase the quantity of the item in the fridge
+    await updateDoc(userFridgeItemQtyDocRef, {quantity: increment(1)});
+
+    }
+
     fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
   };
 
@@ -136,11 +153,12 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
           firestoreData={firestoreData}
           addFridge={addFridge}
           removeFridge={removeFridge}
+          updateFridge={updateFridge}
           user={user}
         />
       ) }
 
-      {firestoreData.map((item: Ingredient) => {
+      {/* {firestoreData.map((item: Ingredient) => {
         const filteredData = firestoreData.filter(
           (firestoreItem) => firestoreItem.id === item.id
         );
@@ -175,7 +193,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
             </Group>
           </div>
         );
-      })}
+      })} */}
 
       {/* <h2>Search Results</h2>
       {searchData.map((item: Ingredient) => {

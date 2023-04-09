@@ -7,6 +7,8 @@ import {
   deleteDoc,
   setDoc,
   doc,
+  updateDoc,
+  increment,
 } from "firebase/firestore";
 import MyFridge from "../components/MyFridge/MyFridge";
 import { User } from "firebase/auth";
@@ -48,6 +50,22 @@ const HomePage: React.FC<IPageProps> = (props) => {
     const userFridgeItemDocRef = doc(userFridgeItemRef, item.id.toString());
 
     await setDoc(userFridgeItemDocRef, item);
+    fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
+  };
+
+  const updateFridge = async (id: string, name: string) => {
+    const userFridgeItemQtyRef = collection(db, "users", user.uid, "fridge");
+    const userFridgeItemQtyDocRef = doc(userFridgeItemQtyRef, id.toString());
+
+    if (name === 'subtract') {
+      // decrease the quantity of the item in the fridge
+      await updateDoc(userFridgeItemQtyDocRef, {quantity: increment(-1)});
+    } else if (name === 'add') {
+      // increase the quantity of the item in the fridge
+    await updateDoc(userFridgeItemQtyDocRef, {quantity: increment(1)});
+
+    }
+
     fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
   };
 
@@ -104,6 +122,7 @@ const HomePage: React.FC<IPageProps> = (props) => {
             firestoreData={firestoreData}
             addFridge={addFridge}
             removeFridge={removeFridge}
+            updateFridge={updateFridge}
             user={user}
           />
         )}

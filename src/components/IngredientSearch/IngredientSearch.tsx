@@ -1,9 +1,15 @@
 import React from "react";
 import { IconSearch, IconArrowRight, IconArrowLeft } from "@tabler/icons-react";
-import { Group, TextInput, TextInputProps, ActionIcon, Button, useMantineTheme } from "@mantine/core";
+import {
+  Group,
+  TextInput,
+  TextInputProps,
+  ActionIcon,
+  Button,
+  useMantineTheme,
+} from "@mantine/core";
 import Ingredient from "../../interfaces/page";
 import KitchenIcon from "@mui/icons-material/Kitchen";
-
 
 interface IngredientSearchProps {
   searchValue: string;
@@ -11,12 +17,20 @@ interface IngredientSearchProps {
   getSearch: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   searchData: Ingredient[];
   firestoreData: Ingredient[];
-    addFridge: (item: Ingredient) => void;
-    removeFridge: (id: string) => void;
+  addFridge: (item: Ingredient) => void;
+  removeFridge: (id: string) => void;
 }
 
 const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
-  const { searchValue, setSearchValue, getSearch, searchData, addFridge, removeFridge, firestoreData } = props;
+  const {
+    searchValue,
+    setSearchValue,
+    getSearch,
+    searchData,
+    addFridge,
+    removeFridge,
+    firestoreData,
+  } = props;
   const theme = useMantineTheme();
 
   return (
@@ -42,10 +56,12 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
         }
         placeholder="Search ingredients"
         rightSectionWidth={42}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setSearchValue(e.target.value)
+        }
         value={searchValue}
       />
-      <h2>Search Results 1</h2>
+      <h2>Search Results</h2>
       {searchData.map((item: Ingredient) => {
         const filteredData = firestoreData.filter(
           (firestoreItem) => firestoreItem.id === item.id
@@ -63,13 +79,17 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
             />
             <Group>
               {filteredData.length > 0 ? (
-                <Button
-                  color="red"
-                  onClick={() => removeFridge(item.id.toString())}
-                  leftIcon={<KitchenIcon />}
-                >
-                  Rm
-                </Button>
+                <>
+                  <Button
+                    color="red"
+                    onClick={() => removeFridge(item.id.toString())}
+                    leftIcon={<KitchenIcon />}
+                  >
+                    Rm
+                  </Button>
+                  <Button>-</Button>
+                  <Button>+</Button>
+                </>
               ) : (
                 <Button
                   onClick={() => addFridge(item)}
@@ -78,8 +98,6 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
                   Add
                 </Button>
               )}
-              <Button>-</Button>
-              <Button>+</Button>
             </Group>
           </>
         );

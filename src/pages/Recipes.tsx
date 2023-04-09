@@ -117,7 +117,11 @@ const Recipes: React.FC<RecipesProps> = (props) => {
         {...props}
       />
       <h2>My Fantasy Fridge</h2>
-      <MyFridge user={user}/>
+      <MyFridge 
+      firestoreData={firestoreData}
+      addFridge={addFridge}
+      removeFridge={removeFridge}
+      user={user}/>
       
       <h2>My Cooking Draft</h2>
       <h2>Search Results</h2>

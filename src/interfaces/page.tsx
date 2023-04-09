@@ -5,6 +5,7 @@ export default interface Ingredient extends DocumentData {
     id: number;
     name: string;
     image: string;
+    quantity: number;
   }
 
   export default interface Recipe extends DocumentData {
