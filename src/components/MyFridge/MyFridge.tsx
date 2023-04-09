@@ -15,44 +15,47 @@ import { Button, Group } from "@mantine/core";
 
 interface MyFridgeProps {
   user: User;
+  firestoreData: Ingredient[];
+  addFridge: (item: Ingredient) => void;
+  removeFridge: (id: string) => void;
 }
 
 const MyFridge: React.FC<MyFridgeProps> = (props) => {
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
-  const { user } = props;
+  const { addFridge, removeFridge, firestoreData } = props;
 
-  const userFridgeRef = collection(db, "users", user.uid, "fridge");
+  // const userFridgeRef = collection(db, "users", user.uid, "fridge");
 
-  const [firestoreData, setFirestoreData] = React.useState<Ingredient[]>([]);
-  const [fridgeEdit, setFridgeEdit] = React.useState(false);
+  // const [firestoreData, setFirestoreData] = React.useState<Ingredient[]>([]);
+  // const [fridgeEdit, setFridgeEdit] = React.useState(false);
 
-  const addFridge = async (item: Ingredient) => {
-    const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
-    const userFridgeItemDocRef = doc(userFridgeItemRef, item.id.toString());
+  // const addFridge = async (item: Ingredient) => {
+  //   const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
+  //   const userFridgeItemDocRef = doc(userFridgeItemRef, item.id.toString());
 
-    await setDoc(userFridgeItemDocRef, item);
-    fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
-  };
+  //   await setDoc(userFridgeItemDocRef, item);
+  //   fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
+  // };
 
-  const removeFridge = async (id: string) => {
-    const userFridgeItemRef = doc(db, "users", user.uid, "fridge", id);
+  // const removeFridge = async (id: string) => {
+  //   const userFridgeItemRef = doc(db, "users", user.uid, "fridge", id);
 
-    await deleteDoc(userFridgeItemRef);
-    fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
-  };
+  //   await deleteDoc(userFridgeItemRef);
+  //   fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
+  // };
 
-  React.useEffect(() => {
-    async function fetchData() {
-      const querySnapshot = await getDocs(userFridgeRef);
-      let dbData: Ingredient[] = [];
-      querySnapshot.docs.forEach((doc) => {
-        dbData.push(doc.data() as Ingredient);
-      });
-      setFirestoreData(dbData);
-      // setFirestoreData(querySnapshot.docs.map((doc) => doc.data() as Ingredient));
-    }
-    fetchData();
-  }, [fridgeEdit]);
+  // React.useEffect(() => {
+  //   async function fetchData() {
+  //     const querySnapshot = await getDocs(userFridgeRef);
+  //     let dbData: Ingredient[] = [];
+  //     querySnapshot.docs.forEach((doc) => {
+  //       dbData.push(doc.data() as Ingredient);
+  //     });
+  //     setFirestoreData(dbData);
+  //     // setFirestoreData(querySnapshot.docs.map((doc) => doc.data() as Ingredient));
+  //   }
+  //   fetchData();
+  // }, [fridgeEdit]);
   return (
     <>
       {firestoreData.map((item: Ingredient) => {

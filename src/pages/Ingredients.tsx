@@ -1,22 +1,24 @@
 import React from "react";
 import { db } from "../config/firebase-config";
-import { collection, getDocs, setDoc, doc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  setDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
 import Ingredient from "../interfaces/page";
 
 import {
-  TextInput,
-  TextInputProps,
-  ActionIcon,
   Button,
   Group,
   useMantineTheme,
 } from "@mantine/core";
-import { IconSearch, IconArrowRight, IconArrowLeft } from "@tabler/icons-react";
 import IngredientSearch from "../components/IngredientSearch/IngredientSearch";
-// import MyFridge from "../components/MyFridge/MyFridge";
+import MyFridge from "../components/MyFridge/MyFridge";
 
 interface IngredientsProps {
   user: User;
@@ -37,9 +39,9 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
 
   const userFridgeRef = collection(db, "users", user.uid, "fridge");
 
-  const updateSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-  };
+  // const updateSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSearchValue(e.target.value);
+  // };
 
   const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -58,7 +60,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
     const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
     const userFridgeItemDocRef = doc(userFridgeItemRef, item.id.toString());
     console.log(item.name, item.image, item.id);
-  
+
     await setDoc(userFridgeItemDocRef, item);
     fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
   };
@@ -86,7 +88,6 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
   React.useEffect(() => {
     getIngredients();
   }, [searchQuery]);
-
 
   return (
     <>
@@ -125,8 +126,20 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
         addFridge={addFridge}
         removeFridge={removeFridge}
       />
-      {/* <MyFridge user={user}/> */}
+
       <h2>My Fantasy Fridge</h2>
+
+      {firestoreData.length === 0 ? (
+        <p>No items in your Fridge</p>
+      ) : (
+        <MyFridge
+          firestoreData={firestoreData}
+          addFridge={addFridge}
+          removeFridge={removeFridge}
+          user={user}
+        />
+      ) }
+
       {firestoreData.map((item: Ingredient) => {
         const filteredData = firestoreData.filter(
           (firestoreItem) => firestoreItem.id === item.id
