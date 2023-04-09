@@ -16,7 +16,7 @@ import { Button, Group } from "@mantine/core";
 interface MyFridgeProps {
   user: User;
   firestoreData: Ingredient[];
-  addFridge: (item: Ingredient) => void;
+  addFridge: (item: Ingredient, quantity: number) => void;
   removeFridge: (id: string) => void;
   updateFridge: (id: string, name: string) => void;
 }
@@ -24,39 +24,7 @@ interface MyFridgeProps {
 const MyFridge: React.FC<MyFridgeProps> = (props) => {
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
   const { addFridge, removeFridge, firestoreData, updateFridge } = props;
-
-  // const userFridgeRef = collection(db, "users", user.uid, "fridge");
-
-  // const [firestoreData, setFirestoreData] = React.useState<Ingredient[]>([]);
-  // const [fridgeEdit, setFridgeEdit] = React.useState(false);
-
-  // const addFridge = async (item: Ingredient) => {
-  //   const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
-  //   const userFridgeItemDocRef = doc(userFridgeItemRef, item.id.toString());
-
-  //   await setDoc(userFridgeItemDocRef, item);
-  //   fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
-  // };
-
-  // const removeFridge = async (id: string) => {
-  //   const userFridgeItemRef = doc(db, "users", user.uid, "fridge", id);
-
-  //   await deleteDoc(userFridgeItemRef);
-  //   fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
-  // };
-
-  // React.useEffect(() => {
-  //   async function fetchData() {
-  //     const querySnapshot = await getDocs(userFridgeRef);
-  //     let dbData: Ingredient[] = [];
-  //     querySnapshot.docs.forEach((doc) => {
-  //       dbData.push(doc.data() as Ingredient);
-  //     });
-  //     setFirestoreData(dbData);
-  //     // setFirestoreData(querySnapshot.docs.map((doc) => doc.data() as Ingredient));
-  //   }
-  //   fetchData();
-  // }, [fridgeEdit]);
+  
   return (
     <>
       {firestoreData.map((item: Ingredient) => {
@@ -83,16 +51,35 @@ const MyFridge: React.FC<MyFridgeProps> = (props) => {
                     Rm
                   </Button>
                   <Button onClick={() => updateFridge(item.id.toString(), 'subtract')} name='subtract' >-</Button>
+                  <p>{filteredData[0].quantity}</p>
                   <Button onClick={() => updateFridge(item.id.toString(), 'add')} name='add'>+</Button>
                 </>
               ) : (
                 <Button
-                  onClick={() => addFridge(item)}
+                  onClick={() => addFridge(item, 0)}
                   leftIcon={<KitchenIcon />}
                 >
                   Add
                 </Button>
               )}
+              {/* {filteredCartData.length > 0 ? (
+                <>
+                  <Button
+                    color="red"
+                    onClick={() => removeCart(item.id.toString())}
+                    leftIcon={<KitchenIcon />}
+                  >
+                    Rm
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  onClick={() => addCart(item)}
+                  leftIcon={<KitchenIcon />}
+                >
+                  Add
+                </Button>
+              )} */}
             </Group>
           </div>
         );

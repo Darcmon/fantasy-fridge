@@ -1,6 +1,6 @@
 import React from "react";
 import { db } from "../config/firebase-config";
-import { collection, getDocs, setDoc, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, setDoc, doc, deleteDoc, updateDoc, increment } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
@@ -63,6 +63,23 @@ const Recipes: React.FC<RecipesProps> = (props) => {
     fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
   };
 
+  const updateFridge = async (id: string, name: string) => {
+    const userFridgeItemQtyRef = collection(db, "users", user.uid, "fridge");
+    const userFridgeItemQtyDocRef = doc(userFridgeItemQtyRef, id.toString());
+
+    if (name === 'subtract') {
+      // decrease the quantity of the item in the fridge
+      await updateDoc(userFridgeItemQtyDocRef, {quantity: increment(-1)});
+    } else if (name === 'add') {
+      // increase the quantity of the item in the fridge
+    await updateDoc(userFridgeItemQtyDocRef, {quantity: increment(1)});
+
+    }
+
+    fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
+  };
+
+
   const removeFridge = async (id: string) => {
     const userFridgeItemRef = doc(db, "users", user.uid, "fridge", id);
 
@@ -121,6 +138,7 @@ const Recipes: React.FC<RecipesProps> = (props) => {
       firestoreData={firestoreData}
       addFridge={addFridge}
       removeFridge={removeFridge}
+      updateFridge={updateFridge}
       user={user}/>
       
       <h2>My Cooking Draft</h2>

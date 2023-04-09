@@ -7,6 +7,7 @@ import {
   doc,
   deleteDoc,
   updateDoc,
+  addDoc,
   increment,
 } from "firebase/firestore";
 import { useParams } from "react-router-dom";
@@ -58,12 +59,14 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
     setSearchData(json.results);
   };
 
-  const addFridge = async (item: Ingredient) => {
+  const addFridge = async (item: Ingredient, quantity: number) => {
     const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
-
     const userFridgeItemDocRef = doc(userFridgeItemRef, item.id.toString());
 
-    await setDoc(userFridgeItemDocRef, {item, quantity: 0});
+    await setDoc(userFridgeItemDocRef, item);
+    await setDoc(userFridgeItemDocRef, { quantity: 0 }, { merge: true });
+    fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
+
   };
 
   const updateFridge = async (id: string, name: string) => {
@@ -134,14 +137,17 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
         value={searchValue}
         {...props}
       /> */}
+      <h2>Search Results</h2>
       <IngredientSearch
         searchValue={searchValue}
         setSearchValue={setSearchValue}
         getSearch={getSearch}
         searchData={searchData}
+        updateFridge={updateFridge}
         firestoreData={firestoreData}
         addFridge={addFridge}
         removeFridge={removeFridge}
+        // key={user.uid}
       />
 
       <h2>My Fantasy Fridge</h2>
@@ -155,6 +161,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
           removeFridge={removeFridge}
           updateFridge={updateFridge}
           user={user}
+          // key={user.uid}
         />
       ) }
 

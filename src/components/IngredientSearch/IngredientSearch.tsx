@@ -17,8 +17,9 @@ interface IngredientSearchProps {
   getSearch: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   searchData: Ingredient[];
   firestoreData: Ingredient[];
-  addFridge: (item: Ingredient) => void;
+  addFridge: (item: Ingredient, quantity: number) => void;
   removeFridge: (id: string) => void;
+  updateFridge: (id: string, name: string) => void;
 }
 
 const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
@@ -30,6 +31,7 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
     addFridge,
     removeFridge,
     firestoreData,
+    updateFridge
   } = props;
   const theme = useMantineTheme();
 
@@ -61,7 +63,6 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
         }
         value={searchValue}
       />
-      <h2>Search Results</h2>
       {searchData.map((item: Ingredient) => {
         const filteredData = firestoreData.filter(
           (firestoreItem) => firestoreItem.id === item.id
@@ -69,6 +70,7 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
 
         return (
           <>
+            <div key={item.id}>
             <p>
               {item.name} {item.id}
             </p>
@@ -87,18 +89,20 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
                   >
                     Rm
                   </Button>
-                  <Button>-</Button>
-                  <Button>+</Button>
+                  <Button onClick={() => updateFridge(item.id.toString(), 'subtract')} name='subtract' >-</Button>
+                    <p>{filteredData[0].quantity}</p>
+                  <Button onClick={() => updateFridge(item.id.toString(), 'add')} name='add'>+</Button>
                 </>
               ) : (
                 <Button
-                  onClick={() => addFridge(item)}
+                  onClick={() => addFridge(item, 0)}
                   leftIcon={<KitchenIcon />}
                 >
                   Add
                 </Button>
               )}
             </Group>
+            </div>
           </>
         );
       })}

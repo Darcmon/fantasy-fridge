@@ -66,9 +66,6 @@ const Fridge: React.FC<FridgeProps> = (props) => {
     fetchData();
   }, [fridgeEdit]);
 
-  console.log(firestoreData);
-  
-
   return (
     <>
       <h1>My Fridge</h1>

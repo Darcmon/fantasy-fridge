@@ -67,6 +67,7 @@ const App: React.FC<IAppProps> = (props) => {
                               </Badge>
                             }
                             value="cookbook"
+                            onClick={() => navigate('/recipes')}
                           >
                             Cookbook Search
                           </Tabs.Tab>
