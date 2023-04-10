@@ -12,14 +12,16 @@ import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
 import Ingredient from "../../interfaces/page";
 import { Button, Group } from "@mantine/core";
+import CartEdit from "../CartEdit/CartEdit";
 
 interface MyCartProps {
   user: User;
+  firestoreFridgeData: Ingredient[];
 }
 
 const MyCart: React.FC<MyCartProps> = (props) => {
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
-  const { user } = props;
+  const { user, firestoreFridgeData } = props;
 
   const userCartRef = collection(db, "users", user.uid, "cart");
 
@@ -27,15 +29,14 @@ const MyCart: React.FC<MyCartProps> = (props) => {
   const [cartEdit, setCartEdit] = React.useState(false);
 
   const addCart = async (item: Ingredient) => {
-    const userCartItemRef = collection(db, "users", user.uid, "Cart");
-    const userCartItemDocRef = doc(userCartItemRef, item.id.toString());
+    const userCartItemDocRef = doc(userCartRef, item.id.toString());
 
     await setDoc(userCartItemDocRef, item);
     cartEdit ? setCartEdit(false) : setCartEdit(true);
   };
 
   const removeCart = async (id: string) => {
-    const userCartItemRef = doc(db, "users", user.uid, "Cart", id);
+    const userCartItemRef = doc(db, "users", user.uid, "cart", id);
 
     await deleteDoc(userCartItemRef);
     cartEdit ? setCartEdit(false) : setCartEdit(true);
@@ -86,7 +87,9 @@ const MyCart: React.FC<MyCartProps> = (props) => {
                 </Button>
               )}
               <Button onClick={() => removeCart(item.id.toString())}>-</Button>
+              <p>{filteredData[0].quantity}</p>
               <Button onClick={() => addCart(item)}>+</Button>
+              <CartEdit user={user} item={item} />
             </Group>
           </div>
         );

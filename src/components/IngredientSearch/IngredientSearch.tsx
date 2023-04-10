@@ -10,6 +10,8 @@ import {
 } from "@mantine/core";
 import Ingredient from "../../interfaces/page";
 import KitchenIcon from "@mui/icons-material/Kitchen";
+import CartEdit from "../CartEdit/CartEdit";
+import { User } from "firebase/auth";
 
 interface IngredientSearchProps {
   searchValue: string;
@@ -20,6 +22,7 @@ interface IngredientSearchProps {
   addFridge: (item: Ingredient, quantity: number) => void;
   removeFridge: (id: string) => void;
   updateFridge: (id: string, name: string) => void;
+  user: User;
 }
 
 const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
@@ -31,7 +34,8 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
     addFridge,
     removeFridge,
     firestoreData,
-    updateFridge
+    updateFridge,
+    user
   } = props;
   const theme = useMantineTheme();
 
@@ -101,6 +105,10 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
                   Add
                 </Button>
               )}
+              <CartEdit 
+              user={user}
+              item={item}
+              />
             </Group>
             </div>
           </>

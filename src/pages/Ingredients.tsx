@@ -147,6 +147,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
         firestoreData={firestoreData}
         addFridge={addFridge}
         removeFridge={removeFridge}
+        user={user}
         // key={user.uid}
       />
 

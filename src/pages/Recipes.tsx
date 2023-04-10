@@ -15,7 +15,8 @@ import {
   Group,
   useMantineTheme,
 } from "@mantine/core";
-import { IconSearch, IconArrowRight, IconArrowLeft } from "@tabler/icons-react";
+import RecipeSearch from "../components/RecipeSearch/RecipeSearch";
+import MyCart from "../components/MyCart/MyCart";
 // import MyFridge from "../components/MyFridge/MyFridge";
 
 interface RecipesProps {
@@ -27,32 +28,12 @@ const Recipes: React.FC<RecipesProps> = (props) => {
 
   const [firestoreData, setFirestoreData] = React.useState<Ingredient[]>([]);
   const [fridgeEdit, setFridgeEdit] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState("");
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [searchData, setSearchData] = React.useState([]);
 
   const { user } = props;
   const { id } = useParams();
   const theme = useMantineTheme();
 
   const userFridgeRef = collection(db, "users", user.uid, "fridge");
-
-  const updateSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-  };
-
-  const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    setSearchQuery(searchValue);
-  };
-
-  const getRecipes = async () => {
-    const data = await fetch(
-      `https://api.spoonacular.com/recipes/complexSearch?query=${recipeQuery}&instructionsRequired=true&addRecipeInformation=true&includeIngredients=${cartQuery}&sortDirection=desc&apiKey=${API_KEY}`
-    );
-    const json = await data.json();
-    setSearchData(json.results);
-  };
 
   const addFridge = async (item: Ingredient) => {
     const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
@@ -79,7 +60,6 @@ const Recipes: React.FC<RecipesProps> = (props) => {
     fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
   };
 
-
   const removeFridge = async (id: string) => {
     const userFridgeItemRef = doc(db, "users", user.uid, "fridge", id);
 
@@ -100,39 +80,18 @@ const Recipes: React.FC<RecipesProps> = (props) => {
     fetchData();
   }, [fridgeEdit]);
 
-  React.useEffect(() => {
-    getRecipes();
-  }, [searchQuery]);
-
-
   return (
     <>
       <h1>Recipes</h1>
-      <TextInput
-        icon={<IconSearch size="1.1rem" stroke={1.5} />}
-        radius="xl"
-        size="md"
-        rightSection={
-          <ActionIcon
-            size={32}
-            radius="xl"
-            color={theme.primaryColor}
-            variant="filled"
-            onClick={getSearch}
-          >
-            {theme.dir === "ltr" ? (
-              <IconArrowRight size="1.1rem" stroke={1.5} />
-            ) : (
-              <IconArrowLeft size="1.1rem" stroke={1.5} />
-            )}
-          </ActionIcon>
-        }
-        placeholder="Search Recipes"
-        rightSectionWidth={42}
-        onChange={updateSearch}
-        value={searchValue}
-        {...props}
+
+      <RecipeSearch
+            firestoreData={firestoreData}
+            addFridge={addFridge}
+            removeFridge={removeFridge}
+            updateFridge={updateFridge}
+            user={user}
       />
+   
       <h2>My Fantasy Fridge</h2>
       <MyFridge 
       firestoreData={firestoreData}
@@ -143,37 +102,10 @@ const Recipes: React.FC<RecipesProps> = (props) => {
       />
       
       <h2>My Cooking Draft</h2>
-      <h2>Search Results</h2>
-      {searchData.map((item: Ingredient) => {
-        const filteredData = firestoreData.filter(firestoreItem => firestoreItem.id === item.id);
-
-        return (
-          <>
-            <p>{item.title}</p>
-
-            <img
-              src={`${item.image}`}
-              alt={`${item.name} picture`}
-            />
-            <Group>
-              {filteredData.length > 0 ? (
-                <Button
-                color="red"
-                onClick={() => removeFridge(item.id.toString())}
-                leftIcon={<KitchenIcon />}
-              >Rm</Button>
-              ) : (
-                <Button
-                  onClick={() => addFridge(item)}
-                  leftIcon={<KitchenIcon />}
-                >Add</Button>
-              )}
-              <Button>-</Button>
-              <Button>+</Button>
-            </Group>
-          </>
-        );
-      })}
+      <MyCart
+      user={user}
+      firestoreFridgeData={firestoreData}
+      />
     </>
   );
 };
