@@ -12,6 +12,7 @@ import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
 import Ingredient from "../../interfaces/page";
 import { Button, Group } from "@mantine/core";
+import CardEdit from "../CartEdit/CartEdit";
 
 interface MyFridgeProps {
   user: User;
@@ -23,7 +24,8 @@ interface MyFridgeProps {
 
 const MyFridge: React.FC<MyFridgeProps> = (props) => {
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
-  const { addFridge, removeFridge, firestoreData, updateFridge } = props;
+  const { addFridge, removeFridge, firestoreData, updateFridge, user } = props;
+  
   
   return (
     <>
@@ -62,6 +64,10 @@ const MyFridge: React.FC<MyFridgeProps> = (props) => {
                   Add
                 </Button>
               )}
+              <CardEdit 
+              user={user}
+              item={item}
+              />
               {/* {filteredCartData.length > 0 ? (
                 <>
                   <Button

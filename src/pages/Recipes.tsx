@@ -1,6 +1,6 @@
 import React from "react";
 import { db } from "../config/firebase-config";
-import { collection, getDocs, setDoc, doc, deleteDoc, updateDoc, increment } from "firebase/firestore";
+import { collection, getDocs, setDoc, doc, deleteDoc, updateDoc, increment  } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
@@ -139,7 +139,8 @@ const Recipes: React.FC<RecipesProps> = (props) => {
       addFridge={addFridge}
       removeFridge={removeFridge}
       updateFridge={updateFridge}
-      user={user}/>
+      user={user}
+      />
       
       <h2>My Cooking Draft</h2>
       <h2>Search Results</h2>
