@@ -73,10 +73,6 @@ const Fridge: React.FC<FridgeProps> = (props) => {
         <p>No items in your Fridge</p>
       ) : (
         <MyFridge
-          firestoreData={firestoreData}
-          addFridge={addFridge}
-          removeFridge={removeFridge}
-          updateFridge={updateFridge}
           user={user}
         />
       ) }

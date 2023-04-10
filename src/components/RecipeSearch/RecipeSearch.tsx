@@ -131,40 +131,13 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
           <>
             <div key={item.id}>
             <p>
-              {item.title} {item.id}
+              {item.title} {item.id} {item.sourceName} Ready in: {item.readyInMinutes} minutes Servings: {item.servings}
             </p>
 
             <img
               src={`${item.image}`}
               alt={`${item.name} picture`}
             />
-            <Group>
-              {filteredData.length > 0 ? (
-                <>
-                  <Button
-                    color="red"
-                    onClick={() => removeFridge(item.id.toString())}
-                    leftIcon={<KitchenIcon />}
-                  >
-                    Rm
-                  </Button>
-                  <Button onClick={() => updateFridge(item.id.toString(), 'subtract')} name='subtract' >-</Button>
-                    <p>{filteredData[0].quantity}</p>
-                  <Button onClick={() => updateFridge(item.id.toString(), 'add')} name='add'>+</Button>
-                </>
-              ) : (
-                <Button
-                  onClick={() => addFridge(item, 0)}
-                  leftIcon={<KitchenIcon />}
-                >
-                  Add
-                </Button>
-              )}
-              <CartEdit 
-              user={user}
-              item={item}
-              />
-            </Group>
             </div>
           </>
         );

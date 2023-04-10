@@ -1,6 +1,14 @@
 import React from "react";
 import { db } from "../config/firebase-config";
-import { collection, getDocs, setDoc, doc, deleteDoc, updateDoc, increment  } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  setDoc,
+  doc,
+  deleteDoc,
+  updateDoc,
+  increment,
+} from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
@@ -39,7 +47,7 @@ const Recipes: React.FC<RecipesProps> = (props) => {
     const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
     const userFridgeItemDocRef = doc(userFridgeItemRef, item.id.toString());
     console.log(item.name, item.image, item.id);
-  
+
     await setDoc(userFridgeItemDocRef, item);
     fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
   };
@@ -48,13 +56,12 @@ const Recipes: React.FC<RecipesProps> = (props) => {
     const userFridgeItemQtyRef = collection(db, "users", user.uid, "fridge");
     const userFridgeItemQtyDocRef = doc(userFridgeItemQtyRef, id.toString());
 
-    if (name === 'subtract') {
+    if (name === "subtract") {
       // decrease the quantity of the item in the fridge
-      await updateDoc(userFridgeItemQtyDocRef, {quantity: increment(-1)});
-    } else if (name === 'add') {
+      await updateDoc(userFridgeItemQtyDocRef, { quantity: increment(-1) });
+    } else if (name === "add") {
       // increase the quantity of the item in the fridge
-    await updateDoc(userFridgeItemQtyDocRef, {quantity: increment(1)});
-
+      await updateDoc(userFridgeItemQtyDocRef, { quantity: increment(1) });
     }
 
     fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
@@ -85,27 +92,20 @@ const Recipes: React.FC<RecipesProps> = (props) => {
       <h1>Recipes</h1>
 
       <RecipeSearch
-            firestoreData={firestoreData}
-            addFridge={addFridge}
-            removeFridge={removeFridge}
-            updateFridge={updateFridge}
-            user={user}
+        firestoreData={firestoreData}
+        addFridge={addFridge}
+        removeFridge={removeFridge}
+        updateFridge={updateFridge}
+        user={user}
       />
-   
+
       <h2>My Fantasy Fridge</h2>
-      <MyFridge 
-      firestoreData={firestoreData}
-      addFridge={addFridge}
-      removeFridge={removeFridge}
-      updateFridge={updateFridge}
-      user={user}
+      <MyFridge
+        user={user}
       />
-      
+
       <h2>My Cooking Draft</h2>
-      <MyCart
-      user={user}
-      firestoreFridgeData={firestoreData}
-      />
+      <MyCart user={user} firestoreFridgeData={firestoreData} />
     </>
   );
 };
