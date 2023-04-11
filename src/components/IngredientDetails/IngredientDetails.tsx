@@ -52,6 +52,7 @@ import {
 import FridgeEdit from "../FridgeEdit/FridgeEdit";
 import CartEdit from "../CartEdit/CartEdit";
 import Ingredient from "../../interfaces/page";
+import Loading from "../Loading/Loading";
 
 const PRIMARY_COL_HEIGHT = rem(300);
 
@@ -91,15 +92,11 @@ const IngredientDetails: React.FC<IngredientDetailsProps> = (props) => {
     fetchData();
   }, [id, API_KEY]);
 
-  console.log(ingredientData);
-
   const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - ${theme.spacing.md} / 2)`;
 
   if (ingredientData.length === 0) {
     return (
-      <h1>
-        LOADINGGG
-      </h1>
+      <Loading/>
     )
   }
 //   const { name, image, id } = ingredientData;

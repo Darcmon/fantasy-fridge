@@ -1,14 +1,4 @@
 import React from "react";
-import { db } from "../../config/firebase-config";
-import {
-  collection,
-  getDocs,
-  deleteDoc,
-  setDoc,
-  doc,
-  updateDoc,
-  increment,
-} from "firebase/firestore";
 import Ingredient from "../../interfaces/page";
 import {
   TextInput,
@@ -19,8 +9,7 @@ import {
 } from "@mantine/core";
 import { User } from "firebase/auth";
 import { IconArrowLeft, IconArrowRight, IconSearch } from "@tabler/icons-react";
-import KitchenIcon from "@mui/icons-material/Kitchen";
-import CartEdit from "../CartEdit/CartEdit";
+import { useNavigate } from "react-router-dom";
 
 interface RecipeSearchProps {
     user: User;
@@ -38,13 +27,43 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
         user
       } = props;
   const theme = useMantineTheme();
+    const navigate = useNavigate();
 
   const [searchValue, setSearchValue] = React.useState("");
   const [searchQuery, setSearchQuery] = React.useState("");
   const [searchData, setSearchData] = React.useState([]);
   const [cartQuery, setCartQuery] = React.useState(null as string | null);
     const [recipeQuery, setRecipeQuery] = React.useState(null as string | null);
+  const [cartDraftString, setDraftString] = React.useState<string>("");
 
+
+    // const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    //     e.preventDefault();
+      
+    //     setSearchQuery(searchValue);
+      
+    //     if (searchValue.includes(", ")) {
+    //       const [recipeValue, ...ingredientValues] = searchQuery.split(", ");
+    //       console.log(recipeValue);
+      
+    //       setRecipeQuery(recipeValue);
+      
+    //       const cartIngredients = ingredientValues.join(",+");
+    //       console.log(cartIngredients);
+      
+    //       setCartQuery(cartIngredients);
+      
+    //       getRecipes();
+    //     } else {
+    //       // If there are no ingredients, set the cart query to an empty string
+    //       setCartQuery('');
+      
+    //       setRecipeQuery(searchValue);
+      
+    //       getRecipes();
+    //     }
+    //   };
+      
     const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
       
@@ -62,15 +81,27 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
           setCartQuery(cartIngredients);
       
           getRecipes();
-        } else {
-          // If there are no ingredients, set the cart query to an empty string
-          setCartQuery('');
+        } else if (searchValue.includes(" ")) {
+          const [recipeValue, ...ingredientValues] = searchValue.split(" ");
+          console.log(recipeValue);
       
-          setRecipeQuery(searchValue);
+          setRecipeQuery(recipeValue);
+      
+          const cartIngredients = ingredientValues.join("+");
+          console.log(cartIngredients);
+      
+          setCartQuery(cartIngredients);
+      
+          getRecipes();
+        } else {
+          // If there are no dish types or ingredients, set both the recipe and cart queries to an empty string
+          setRecipeQuery('');
+          setCartQuery('');
       
           getRecipes();
         }
       };
+      
       
       
   const getRecipes = async () => {
@@ -83,6 +114,18 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
     
     setSearchData(json.results);
   };
+
+  const cartDraft = async (firestoreData: Ingredient[]) => {
+    let draftString: string = "";
+    firestoreData.forEach((ingredient) => {
+      draftString += ingredient.name + " ";
+    });
+    setDraftString(draftString.trim());
+  };
+  
+  React.useEffect(() => {
+    cartDraft(firestoreData);
+  }, [firestoreData]);
 
 
   React.useEffect(() => {
@@ -126,7 +169,7 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
 
         return (
           <>
-            <div key={item.id}>
+            <div key={item.id} onClick={() => navigate(`/recipes/${item.id}`)}>
             <p>
               {item.title} {item.id} {item.sourceName} Ready in: {item.readyInMinutes} minutes Servings: {item.servings}
             </p>

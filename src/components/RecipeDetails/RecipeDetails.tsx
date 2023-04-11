@@ -33,7 +33,7 @@
 import React from "react";
 import "./RecipeDetails.scss";
 import { User } from "firebase/auth";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import EggIcon from "@mui/icons-material/Egg";
 
 import {
   Container,
@@ -83,7 +83,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = (props) => {
   React.useEffect(() => {
     async function fetchData() {
       const data = await fetch(
-        `https://api.spoonacular.com/food/recipes/${id}/information?apiKey=${API_KEY}`
+        `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`
       );
       const json = await data.json();
       setRecipeData(json);
@@ -110,37 +110,51 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = (props) => {
         spacing="md"
         breakpoints={[{ maxWidth: "sm", cols: 1 }]}
       >
-        <div className="Recipe-detail__border">
+        <div className="recipe-detail__border">
         <Image
           height={PRIMARY_COL_HEIGHT}
           radius="md"
           src={recipeData.image}
+          caption={recipeData.creditsText}
         />
+        <Text>{recipeData.instructions}</Text>
         </div>
         <Grid gutter="md">
           <Grid.Col>
             <h1>{recipeData.title}</h1>
           </Grid.Col>
           <Grid.Col span={6}>
-            {/* <Stack>
-            <FridgeEdit item={recipeData} user={user}/>
-            <CartEdit item={recipeData} user={user}/>
-            </Stack> */}
+          <List
+              spacing="xs"
+              size="sm"
+              icon={
+                <ThemeIcon color="teal" size={24} radius="xl">
+                  <EggIcon />
+                </ThemeIcon>
+              }
+            >
+              <List.Item>Ready in: {recipeData.readyInMinutes} mins.</List.Item>
+              <List.Item>Servings: {recipeData.servings}</List.Item>
+              <List.Item>Dairy-Free: {recipeData.dairyFree.toString()}</List.Item>
+              <List.Item>Gluten-Free: {recipeData.glutenFree.toString()}</List.Item>
+              <List.Item>Vegan: {recipeData.vegan.toString()}</List.Item>
+              <List.Item>Vegetarian: {recipeData.vegetarian.toString()}</List.Item>
+
+            </List>
           </Grid.Col>
           <Grid.Col span={6}>
             <List
               spacing="xs"
               size="sm"
-              center
               icon={
                 <ThemeIcon color="teal" size={24} radius="xl">
-                  <ControlPointIcon />
+                  <EggIcon />
                 </ThemeIcon>
               }
             >
-                <Text>Possible Units</Text>
-                {recipeData.possibleUnits.map((unit) => (
-              <List.Item key={unit}>{unit}</List.Item>
+                <h2>Ingredients</h2>
+                {recipeData.extendedIngredients.map((ingredient) => (
+              <List.Item key={ingredient}>{ingredient.name}</List.Item>
             ))}
 
             </List>

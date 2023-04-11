@@ -25,6 +25,7 @@ import {
 } from "@mantine/core";
 import RecipeSearch from "../components/RecipeSearch/RecipeSearch";
 import MyCart from "../components/MyCart/MyCart";
+import RecipeDetails from "../components/RecipeDetails/RecipeDetails";
 // import MyFridge from "../components/MyFridge/MyFridge";
 
 interface RecipesProps {
@@ -89,6 +90,7 @@ const Recipes: React.FC<RecipesProps> = (props) => {
 
   return (
     <>
+    {!id ? (<>
       <h1>Recipes</h1>
 
       <RecipeSearch
@@ -106,6 +108,7 @@ const Recipes: React.FC<RecipesProps> = (props) => {
 
       <h2>My Cooking Draft</h2>
       <MyCart user={user} firestoreFridgeData={firestoreData} />
+    </>) : <RecipeDetails user={user} id={id}/>}
     </>
   );
 };

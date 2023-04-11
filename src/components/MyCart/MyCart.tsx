@@ -47,15 +47,20 @@ const MyCart: React.FC<MyCartProps> = (props) => {
   React.useEffect(() => {
     async function fetchData() {
       const querySnapshot = await getDocs(userCartRef);
+      
       let dbData: Ingredient[] = [];
       querySnapshot.docs.forEach((doc) => {
         dbData.push(doc.data() as Ingredient);
       });
+      
       setFirestoreData(dbData);
       // setFirestoreData(querySnapshot.docs.map((doc) => doc.data() as Ingredient));
     }
     fetchData();
   }, [cartEdit]);
+
+
+
   return (
     <>
       {firestoreData.map((item: Ingredient) => {
