@@ -9,11 +9,11 @@ import {
   increment,
   getDocs,
 } from "firebase/firestore";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
 import Ingredient from "../../interfaces/page";
-import { Button, Group } from "@mantine/core";
+import { Stack, Anchor } from "@mantine/core";
 import CardEdit from "../CartEdit/CartEdit";
 import FridgeEdit from "../FridgeEdit/FridgeEdit";
 
@@ -24,6 +24,7 @@ interface MyFridgeProps {
 const MyFridge: React.FC<MyFridgeProps> = (props) => {
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
   const { user } = props;
+  const navigate = useNavigate();
 
   const userFridgeRef = collection(db, "users", user.uid, "fridge");
 
@@ -88,6 +89,11 @@ const MyFridge: React.FC<MyFridgeProps> = (props) => {
             );
             return (
               <div key={item.id}>
+                <Anchor
+            underline={false}
+            color = 'black'
+            onClick={() => navigate(`/ingredients/${item.id}`)}
+            >
                 <p>
                   {item.name} {item.id}
                 </p>
@@ -95,10 +101,13 @@ const MyFridge: React.FC<MyFridgeProps> = (props) => {
                   src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}
                   alt={`${item.name} picture`}
                 />
-                <Group>
+                </Anchor>
+                          <Stack align='center' justify='center'
+          spacing='xl'
+          >
                   <FridgeEdit user={user} item={item}/>
                   <CardEdit user={user} item={item} />
-                </Group>
+                </Stack>
               </div>
             );
           })}

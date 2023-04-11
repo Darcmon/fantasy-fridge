@@ -54,7 +54,7 @@ const addCart = async (item: Ingredient) => {
     return ( 
         <>
         {filteredCartData.length > 0 ? (
-          <Stack justify='center'
+          <Stack align='center' justify='center'
           spacing='xl'
           >
                   <Button
@@ -66,7 +66,8 @@ const addCart = async (item: Ingredient) => {
                   </Button>
                   </Stack>
               ) : (
-                <Stack>
+                <Stack align='center' justify='center'
+                spacing='xl'>
                 <Button
                   onClick={() => addCart(item)}
                   leftIcon={<MenuBookIcon />}

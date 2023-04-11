@@ -31,7 +31,7 @@
 // }, []);
 
 import React from "react";
-import "./IngredientDetails.scss";
+import "./RecipeDetails.scss";
 import { User } from "firebase/auth";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 
@@ -51,58 +51,58 @@ import {
 } from "@mantine/core";
 import FridgeEdit from "../FridgeEdit/FridgeEdit";
 import CartEdit from "../CartEdit/CartEdit";
-import Ingredient from "../../interfaces/page";
+import Recipe from "../../interfaces/page";
 
 const PRIMARY_COL_HEIGHT = rem(300);
 
-interface IngredientDetailsProps {
+interface RecipeDetailsProps {
   user: User;
   id: string;
 }
 
-interface IngredientDetails {
-    ingredientData: Ingredient;
+interface RecipeDetails {
+    RecipeData: Recipe;
 }
 
-const IngredientDetails: React.FC<IngredientDetailsProps> = (props) => {
+const RecipeDetails: React.FC<RecipeDetailsProps> = (props) => {
   const { user, id } = props;
   const theme = useMantineTheme();
 
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
 
-  const [ingredientData, setIngredientData] = React.useState<IngredientDetails>([]);
+  const [recipeData, setRecipeData] = React.useState<RecipeDetails>([]);
 
-  // const getIngredients = async () => {
+  // const getRecipes = async () => {
   //     const data = await fetch(
-  //       `  https://api.spoonacular.com/food/ingredients/${id}/information&apiKey=${API_KEY}`
+  //       `  https://api.spoonacular.com/food/Recipes/${id}/information&apiKey=${API_KEY}`
   //     );
   //     const json = await data.json();
-  //     setIngredientData(json.results);
+  //     setRecipeData(json.results);
   //   };
 
   React.useEffect(() => {
     async function fetchData() {
       const data = await fetch(
-        `https://api.spoonacular.com/food/ingredients/${id}/information?apiKey=${API_KEY}`
+        `https://api.spoonacular.com/food/recipes/${id}/information?apiKey=${API_KEY}`
       );
       const json = await data.json();
-      setIngredientData(json);
+      setRecipeData(json);
     }
     fetchData();
   }, [id, API_KEY]);
 
-  console.log(ingredientData);
+  console.log(recipeData);
 
   const SECONDARY_COL_HEIGHT = `calc(${PRIMARY_COL_HEIGHT} / 2 - ${theme.spacing.md} / 2)`;
 
-  if (ingredientData.length === 0) {
+  if (recipeData.length === 0) {
     return (
       <h1>
         LOADINGGG
       </h1>
     )
   }
-//   const { name, image, id } = ingredientData;
+//   const { name, image, id } = RecipeData;
   return (
     <Container my="md">
       <SimpleGrid
@@ -110,22 +110,22 @@ const IngredientDetails: React.FC<IngredientDetailsProps> = (props) => {
         spacing="md"
         breakpoints={[{ maxWidth: "sm", cols: 1 }]}
       >
-        <div className="ingredient-detail__border">
+        <div className="Recipe-detail__border">
         <Image
           height={PRIMARY_COL_HEIGHT}
           radius="md"
-          src={`https://spoonacular.com/cdn/ingredients_100x100/${ingredientData.image}`}
+          src={recipeData.image}
         />
         </div>
         <Grid gutter="md">
           <Grid.Col>
-            <h1>{ingredientData.name}</h1>
+            <h1>{recipeData.title}</h1>
           </Grid.Col>
           <Grid.Col span={6}>
-            <Stack>
-            <FridgeEdit item={ingredientData} user={user}/>
-            <CartEdit item={ingredientData} user={user}/>
-            </Stack>
+            {/* <Stack>
+            <FridgeEdit item={recipeData} user={user}/>
+            <CartEdit item={recipeData} user={user}/>
+            </Stack> */}
           </Grid.Col>
           <Grid.Col span={6}>
             <List
@@ -139,7 +139,7 @@ const IngredientDetails: React.FC<IngredientDetailsProps> = (props) => {
               }
             >
                 <Text>Possible Units</Text>
-                {ingredientData.possibleUnits.map((unit) => (
+                {recipeData.possibleUnits.map((unit) => (
               <List.Item key={unit}>{unit}</List.Item>
             ))}
 
@@ -151,4 +151,4 @@ const IngredientDetails: React.FC<IngredientDetailsProps> = (props) => {
   );
 };
 
-export default IngredientDetails;
+export default RecipeDetails;

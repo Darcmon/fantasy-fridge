@@ -74,6 +74,7 @@ const HeaderNav: React.FC<HeaderNavProps> = (props) => {
                 variant="filled"
                 size="xl"
                 p={0}
+                color="orange"
               >
                 {cartCounter}
               </Badge>

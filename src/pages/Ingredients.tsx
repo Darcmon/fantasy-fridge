@@ -108,7 +108,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
     <>
     {!id ? (<>
       <h1>Ingredients</h1>
-      <h2>Search Results</h2>
+      
       <IngredientSearch
         searchValue={searchValue}
         setSearchValue={setSearchValue}

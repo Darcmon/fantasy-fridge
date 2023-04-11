@@ -72,6 +72,7 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
         }
         value={searchValue}
       />
+      {searchData.length > 0 ? <h2>Search Results</h2> : null}
       {searchData.map((item: Ingredient) => {
         const filteredData = firestoreData.filter(
           (firestoreItem) => firestoreItem.id === item.id

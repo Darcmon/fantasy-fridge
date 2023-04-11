@@ -122,7 +122,8 @@ const IngredientDetails: React.FC<IngredientDetailsProps> = (props) => {
             <h1>{ingredientData.name}</h1>
           </Grid.Col>
           <Grid.Col span={6}>
-            <Stack>
+            <Stack align='center' justify='center'
+          spacing='xl'>
             <FridgeEdit item={ingredientData} user={user}/>
             <CartEdit item={ingredientData} user={user}/>
             </Stack>
