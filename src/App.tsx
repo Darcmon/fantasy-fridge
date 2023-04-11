@@ -1,32 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, useParams, useNavigate } from "react-router-dom";
-import { MantineProvider, Tabs, Badge } from "@mantine/core";
+import { Routes, Route } from "react-router-dom";
+import { MantineProvider, AppShell, Header } from "@mantine/core";
 import AuthRoute from "./components/AuthRoute/AuthRoute";
-import { auth, db } from "./config/firebase-config";
-import { collection, setDoc, getDocs } from "firebase/firestore";
+import { auth } from "./config/firebase-config";
 import logging from "./config/logging";
 import routes from "./config/routes";
-import KitchenIcon from "@mui/icons-material/Kitchen";
 import './App.scss'
+import HeaderNav from "./components/HeaderNav/HeaderNav";
+import { User } from "firebase/auth";
 
 export interface IAppProps {}
 
 const App: React.FC<IAppProps> = (props) => {
   const [loading, setLoading] = useState<boolean>(true);
-
-  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
         logging.info("User detected.");
+        setUser(user);
       } else {
         logging.info("No user detected");
+        setUser(user);
       }
 
       setLoading(false);
     });
-  }, []);
+  }, [user]);
 
   if (loading) return <h1>Loading...</h1>;
 
@@ -43,36 +44,14 @@ const App: React.FC<IAppProps> = (props) => {
                 element={
                   route.protected ? (
                     <AuthRoute>
-                      {/* <div className='anim_gradient'></div> */}
-                      <Component user={auth.currentUser} />
+                      <AppShell
+                      header={<Header height={150} p="xs" fixed={true}><HeaderNav user={user} /></Header>}
+                      >
                       
-                      <Tabs defaultValue="home" variant="pills" radius="xs">
-                        <Tabs.List>
-                          <Tabs.Tab value="Home" onClick={() => navigate('/')}>Home</Tabs.Tab>
-                          <Tabs.Tab value="fridge" onClick={() => navigate('/fridge')}icon={<KitchenIcon />}>
-                            Fridge
-                          </Tabs.Tab>
-                          <Tabs.Tab value="ingredients" onClick={() => navigate('/ingredients')}>Ingredients</Tabs.Tab>
-                          <Tabs.Tab
-                            rightSection={
-                              <Badge
-                                w={32}
-                                h={32}
-                                sx={{ pointerEvents: "none" }}
-                                variant="filled"
-                                size="xl"
-                                p={0}
-                              >
-                                6
-                              </Badge>
-                            }
-                            value="cookbook"
-                            onClick={() => navigate('/recipes')}
-                          >
-                            Cookbook Search
-                          </Tabs.Tab>
-                        </Tabs.List>
-                      </Tabs>
+                      <div className="component--padding">
+                      <Component user={user} />
+                      </div>
+                      </AppShell>
                     </AuthRoute>
                   ) : (
                     <Component />

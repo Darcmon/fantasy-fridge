@@ -86,9 +86,9 @@ const MyCart: React.FC<MyCartProps> = (props) => {
                   Add
                 </Button>
               )}
-              <Button onClick={() => removeCart(item.id.toString())}>-</Button>
+              {/* <Button onClick={() => removeCart(item.id.toString())}>-</Button>
               <p>{filteredData[0].quantity}</p>
-              <Button onClick={() => addCart(item)}>+</Button>
+              <Button onClick={() => addCart(item)}>+</Button> */}
               <CartEdit user={user} item={item} />
             </Group>
           </div>

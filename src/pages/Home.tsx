@@ -27,7 +27,6 @@ const HomePage: React.FC<IPageProps> = (props) => {
   return (
     <>
       <div>
-        <p>Welcome to this page that is protected by Firebase</p>
         <p>
           Click <Link to="/logout">here</Link> to logout.
         </p>

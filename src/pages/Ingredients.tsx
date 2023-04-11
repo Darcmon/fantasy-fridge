@@ -15,13 +15,10 @@ import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
 import Ingredient from "../interfaces/page";
 
-import {
-  Button,
-  Group,
-  useMantineTheme,
-} from "@mantine/core";
+import { Button, Group, useMantineTheme } from "@mantine/core";
 import IngredientSearch from "../components/IngredientSearch/IngredientSearch";
 import MyFridge from "../components/MyFridge/MyFridge";
+import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
 
 interface IngredientsProps {
   user: User;
@@ -66,20 +63,18 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
     await setDoc(userFridgeItemDocRef, item);
     await setDoc(userFridgeItemDocRef, { quantity: 0 }, { merge: true });
     fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
-
   };
 
   const updateFridge = async (id: string, name: string) => {
     const userFridgeItemQtyRef = collection(db, "users", user.uid, "fridge");
     const userFridgeItemQtyDocRef = doc(userFridgeItemQtyRef, id.toString());
 
-    if (name === 'subtract') {
+    if (name === "subtract") {
       // decrease the quantity of the item in the fridge
-      await updateDoc(userFridgeItemQtyDocRef, {quantity: increment(-1)});
-    } else if (name === 'add') {
+      await updateDoc(userFridgeItemQtyDocRef, { quantity: increment(-1) });
+    } else if (name === "add") {
       // increase the quantity of the item in the fridge
-    await updateDoc(userFridgeItemQtyDocRef, {quantity: increment(1)});
-
+      await updateDoc(userFridgeItemQtyDocRef, { quantity: increment(1) });
     }
 
     fridgeEdit ? setFridgeEdit(false) : setFridgeEdit(true);
@@ -111,32 +106,8 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
 
   return (
     <>
+    {!id ? (<>
       <h1>Ingredients</h1>
-      {/* <TextInput
-        icon={<IconSearch size="1.1rem" stroke={1.5} />}
-        radius="xl"
-        size="md"
-        rightSection={
-          <ActionIcon
-            size={32}
-            radius="xl"
-            color={theme.primaryColor}
-            variant="filled"
-            onClick={getSearch}
-          >
-            {theme.dir === "ltr" ? (
-              <IconArrowRight size="1.1rem" stroke={1.5} />
-            ) : (
-              <IconArrowLeft size="1.1rem" stroke={1.5} />
-            )}
-          </ActionIcon>
-        }
-        placeholder="Search ingredients"
-        rightSectionWidth={42}
-        onChange={updateSearch}
-        value={searchValue}
-        {...props}
-      /> */}
       <h2>Search Results</h2>
       <IngredientSearch
         searchValue={searchValue}
@@ -160,84 +131,8 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
           user={user}
           // key={user.uid}
         />
-      ) }
-
-      {/* {firestoreData.map((item: Ingredient) => {
-        const filteredData = firestoreData.filter(
-          (firestoreItem) => firestoreItem.id === item.id
-        );
-        return (
-          <div key={item.id}>
-            <p>
-              {item.name} {item.id}
-            </p>
-            <img
-              src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}
-              alt={`${item.name} picture`}
-            />
-            <Group>
-              {filteredData.length > 0 ? (
-                <Button
-                  color="red"
-                  onClick={() => removeFridge(item.id.toString())}
-                  leftIcon={<KitchenIcon />}
-                >
-                  Rm
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => addFridge(item)}
-                  leftIcon={<KitchenIcon />}
-                >
-                  Add
-                </Button>
-              )}
-              <Button>-</Button>
-              <Button>+</Button>
-            </Group>
-          </div>
-        );
-      })} */}
-
-      {/* <h2>Search Results</h2>
-      {searchData.map((item: Ingredient) => {
-        const filteredData = firestoreData.filter(
-          (firestoreItem) => firestoreItem.id === item.id
-        );
-
-        return (
-          <>
-            <p>
-              {item.name} {item.id}
-            </p>
-
-            <img
-              src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}
-              alt={`${item.name} picture`}
-            />
-            <Group>
-              {filteredData.length > 0 ? (
-                <Button
-                  color="red"
-                  onClick={() => removeFridge(item.id.toString())}
-                  leftIcon={<KitchenIcon />}
-                >
-                  Rm
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => addFridge(item)}
-                  leftIcon={<KitchenIcon />}
-                >
-                  Add
-                </Button>
-              )}
-              <Button>-</Button>
-              <Button>+</Button>
-            </Group>
-          </>
-        );
-      })} */}
+      )}
+    </>) : <IngredientDetails name="Strawberry Waffle"/>}
     </>
   );
 };
