@@ -7,11 +7,14 @@ import {
   ActionIcon,
   Button,
   useMantineTheme,
+  Anchor,
 } from "@mantine/core";
 import Ingredient from "../../interfaces/page";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import CartEdit from "../CartEdit/CartEdit";
 import { User } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
 
 interface IngredientSearchProps {
   searchValue: string;
@@ -38,6 +41,8 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
     user
   } = props;
   const theme = useMantineTheme();
+  const navigate = useNavigate();
+
 
   return (
     <>
@@ -75,6 +80,11 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
         return (
           <>
             <div key={item.id}>
+            <Anchor
+            underline={false}
+            color = 'black'
+            onClick={() => navigate(`/ingredients/${item.id}`)}
+            >
             <p>
               {item.name} {item.id}
             </p>
@@ -83,6 +93,7 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
               src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}
               alt={`${item.name} picture`}
             />
+            </Anchor>
             <Group>
               {filteredData.length > 0 ? (
                 <>

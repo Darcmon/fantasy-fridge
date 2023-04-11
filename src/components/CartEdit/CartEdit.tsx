@@ -2,7 +2,7 @@ import React from 'react';
 import { db } from '../../config/firebase-config';
 import { collection, getDocs, deleteDoc, setDoc, doc } from 'firebase/firestore';
 import Ingredient from '../../interfaces/page';
-import { Button } from '@mantine/core';
+import { Button, Stack } from '@mantine/core';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { User } from 'firebase/auth';
 
@@ -54,6 +54,9 @@ const addCart = async (item: Ingredient) => {
     return ( 
         <>
         {filteredCartData.length > 0 ? (
+          <Stack justify='center'
+          spacing='xl'
+          >
                   <Button
                     color="red"
                     onClick={() => removeCart(item.id.toString())}
@@ -61,13 +64,16 @@ const addCart = async (item: Ingredient) => {
                   >
                     Rm
                   </Button>
+                  </Stack>
               ) : (
+                <Stack>
                 <Button
                   onClick={() => addCart(item)}
                   leftIcon={<MenuBookIcon />}
                 >
                   Add
                 </Button>
+                </Stack>
               )}
         </>
      );

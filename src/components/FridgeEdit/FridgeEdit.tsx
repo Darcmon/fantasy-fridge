@@ -2,7 +2,7 @@ import React from 'react';
 import { db } from '../../config/firebase-config';
 import { collection, getDocs, deleteDoc, setDoc, doc, updateDoc, increment } from 'firebase/firestore';
 import Ingredient from '../../interfaces/page';
-import { Button } from '@mantine/core';
+import { Button, Group, Stack } from '@mantine/core';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { User } from 'firebase/auth';
 import KitchenIcon from '@mui/icons-material/Kitchen';
@@ -72,7 +72,7 @@ const addFridge = async (item: Ingredient, quantity: number) => {
     return ( 
         <>
         {filteredFridgeData.length > 0 ? (
-                    <>
+                    <Stack align='stretch' justify='center'>
                     <Button
                       color="red"
                       onClick={() => removeFridge(item.id.toString())}
@@ -80,6 +80,7 @@ const addFridge = async (item: Ingredient, quantity: number) => {
                     >
                       Rm
                     </Button>
+                    <Group>
                     <Button
                       onClick={() =>
                         updateFridge(item.id.toString(), "subtract")
@@ -95,7 +96,8 @@ const addFridge = async (item: Ingredient, quantity: number) => {
                     >
                       +
                     </Button>
-                  </>
+                    </Group>
+                    </Stack>
               ) : (
                 <Button
                   onClick={() => addFridge(item, 0)}

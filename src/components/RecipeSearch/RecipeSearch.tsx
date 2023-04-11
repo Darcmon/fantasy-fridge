@@ -34,10 +34,7 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
 
     const {
-        addFridge,
-        removeFridge,
         firestoreData,
-        updateFridge,
         user
       } = props;
   const theme = useMantineTheme();

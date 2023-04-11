@@ -132,7 +132,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
           // key={user.uid}
         />
       )}
-    </>) : <IngredientDetails name="Strawberry Waffle"/>}
+    </>) : <IngredientDetails user={user} id={id}/>}
     </>
   );
 };

@@ -7,11 +7,11 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
 import Ingredient from "../../interfaces/page";
-import { Button, Group } from "@mantine/core";
+import { Button, Group, Anchor } from "@mantine/core";
 import CartEdit from "../CartEdit/CartEdit";
 
 interface MyCartProps {
@@ -22,6 +22,8 @@ interface MyCartProps {
 const MyCart: React.FC<MyCartProps> = (props) => {
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
   const { user, firestoreFridgeData } = props;
+  const navigate = useNavigate();
+
 
   const userCartRef = collection(db, "users", user.uid, "cart");
 
@@ -62,6 +64,11 @@ const MyCart: React.FC<MyCartProps> = (props) => {
         );
         return (
           <div key={item.id}>
+                        <Anchor
+            underline={false}
+            color = 'black'
+            onClick={() => navigate(`/ingredients/${item.id}`)}
+            >
             <p>
               {item.name} {item.id}
             </p>
@@ -69,6 +76,7 @@ const MyCart: React.FC<MyCartProps> = (props) => {
               src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}
               alt={`${item.name} picture`}
             />
+            </Anchor>
             <Group>
               {filteredData.length > 0 ? (
                 <Button
