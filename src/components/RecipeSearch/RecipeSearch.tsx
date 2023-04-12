@@ -2,13 +2,13 @@ import React from "react";
 import Ingredient from "../../interfaces/page";
 import {
   TextInput,
-  ActionIcon,
+  Anchor,
   Button,
   Paper,
   useMantineTheme,
 } from "@mantine/core";
 import { User } from "firebase/auth";
-import { IconArrowLeft, IconArrowRight, IconSearch } from "@tabler/icons-react";
+import { IconSearch } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
 interface RecipeSearchProps {
@@ -137,6 +137,11 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
         // );
 
         return (
+            <Anchor
+            underline={false}
+            color = 'black'
+            onClick={() => navigate(`/recipes/${item.id}`)}
+            >
             <div key={item.id} onClick={() => navigate(`/recipes/${item.id}`)}>
             <p>
               {item.title}
@@ -150,6 +155,7 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
               alt={`${item.name} picture`}
             />
             </div>
+            </Anchor>
         );
       })}
     </>

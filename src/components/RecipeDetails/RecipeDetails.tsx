@@ -52,6 +52,7 @@ import {
 import FridgeEdit from "../FridgeEdit/FridgeEdit";
 import CartEdit from "../CartEdit/CartEdit";
 import Recipe from "../../interfaces/page";
+import Ingredient from "../../interfaces/page";
 
 const PRIMARY_COL_HEIGHT = rem(300);
 
@@ -61,29 +62,7 @@ interface RecipeDetailsProps {
 }
 
 interface RecipeDetails {
-    recipeData: [
-        {
-            id: number,
-            title: string,
-            image: string,
-            imageType: string,
-            summary: string,
-            instructions: string,
-            readyInMinutes: number,
-            servings: number,
-            sourceUrl: string,
-            spoonacularSourceUrl: string,
-            pricePerServing: number,
-            extendedIngredients: [
-                {
-                    id: number,
-                    aisle: string,
-                    image: string,
-                }
-              ]
-            }
-
-    ];
+    recipeData: Ingredient;
 }
 
 const RecipeDetails: React.FC<RecipeDetailsProps> = (props) => {
@@ -92,7 +71,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = (props) => {
 
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
 
-  const [recipeData, setRecipeData] = React.useState<RecipeDetails>([ { id: 0, title: "", image: "", imageType: "", summary: "", instructions: "", readyInMinutes: 0, servings: 0, sourceUrl: "", spoonacularSourceUrl: "", pricePerServing: 0, extendedIngredients: [{ id: 0, aisle: "", image: "" }] } ] );
+  const [recipeData, setRecipeData] = React.useState<RecipeDetails>([]);
 
   // const getRecipes = async () => {
   //     const data = await fetch(
@@ -155,6 +134,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = (props) => {
                 </ThemeIcon>
               }
             >
+              <h2>Details</h2>
               <List.Item>Ready in: {recipeData.readyInMinutes} mins.</List.Item>
               <List.Item>Servings: {recipeData.servings}</List.Item>
               <List.Item>Dairy-Free: {recipeData.dairyFree.toString()}</List.Item>
