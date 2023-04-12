@@ -140,9 +140,10 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
             <Anchor
             underline={false}
             color = 'black'
+            key={item.id}
             onClick={() => navigate(`/recipes/${item.id}`)}
             >
-            <div key={item.id} onClick={() => navigate(`/recipes/${item.id}`)}>
+            <div onClick={() => navigate(`/recipes/${item.id}`)}>
             <p>
               {item.title}
             </p>

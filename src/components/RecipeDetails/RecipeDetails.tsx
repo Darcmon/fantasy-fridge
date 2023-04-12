@@ -62,7 +62,19 @@ interface RecipeDetailsProps {
 }
 
 interface RecipeDetails {
-    recipeData: Ingredient;
+        id: number;
+        title: string;
+        image: string;
+        instructions: string;
+        creditsText: string;
+        length: number;
+        readyInMinutes: number;
+        servings: number;
+        dairyFree: boolean;
+        glutenFree: boolean;
+        vegan: boolean;
+        vegetarian: boolean;
+        extendedIngredients: Ingredient[];
 }
 
 const RecipeDetails: React.FC<RecipeDetailsProps> = (props) => {
@@ -71,7 +83,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = (props) => {
 
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
 
-  const [recipeData, setRecipeData] = React.useState<RecipeDetails>([]);
+  const [recipeData, setRecipeData] = React.useState<RecipeDetails>({id : 0, title: "", image: "", instructions: "", creditsText: "", length: 0, readyInMinutes: 0, servings: 0, dairyFree: false, glutenFree: false, vegan: false, vegetarian: false, extendedIngredients: []});
 
   // const getRecipes = async () => {
   //     const data = await fetch(
@@ -118,11 +130,12 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = (props) => {
           src={recipeData.image}
           caption={recipeData.creditsText}
         />
-        <Text>{recipeData.instructions}</Text>
+       
         </div>
         <Grid gutter="md">
           <Grid.Col>
             <h1>{recipeData.title}</h1>
+            <Text>{recipeData.instructions}</Text>
           </Grid.Col>
           <Grid.Col span={6}>
           <List
@@ -155,8 +168,8 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = (props) => {
               }
             >
                 <h2>Ingredients</h2>
-                {recipeData.extendedIngredients.map((ingredient) => (
-              <List.Item key={ingredient}>{ingredient.name}</List.Item>
+                {recipeData.extendedIngredients.map((ingredient: {id: number, name: string}) => (
+              <List.Item key={ingredient.id}>{ingredient.name}</List.Item>
             ))}
 
             </List>
