@@ -31,8 +31,7 @@ const HomePage: React.FC<IPageProps> = (props) => {
           Click <Link to="/logout">here</Link> to logout.
         </p>
         {user.email === null ? <h1>Welcome Guest!</h1> : <h1>Welcome back {user.email}!</h1>}
-        <h2>Fantasy Fridge:</h2>
-        
+        <h2>My Fantasy Fridge:</h2>
           <MyFridge
             user={user}
           />

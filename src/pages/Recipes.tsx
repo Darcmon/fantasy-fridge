@@ -37,11 +37,12 @@ const Recipes: React.FC<RecipesProps> = (props) => {
 
   const [firestoreData, setFirestoreData] = React.useState<Ingredient[]>([]);
   const [fridgeEdit, setFridgeEdit] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState("");
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [recipeValue, setRecipeValue] = React.useState("");
+  const [ingredientValue, setIngredientValue] = React.useState("");
+  const [ingredientQuery, setIngredientQuery] = React.useState(null as string | null);
+  // const [searchQuery, setSearchQuery] = React.useState("");
   const [searchData, setSearchData] = React.useState([]);
-  const [cartQuery, setCartQuery] = React.useState(null as string | null);
-    const [recipeQuery, setRecipeQuery] = React.useState(null as string | null);
+  const [recipeQuery, setRecipeQuery] = React.useState(null as string | null);
 
   const { user } = props;
   const { id } = useParams();
@@ -94,42 +95,29 @@ const Recipes: React.FC<RecipesProps> = (props) => {
   }, [fridgeEdit]);
 
   const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    setSearchQuery(searchValue);
-    setRecipeQuery('');
-    setCartQuery('');
-  
-    if (searchValue.includes(", ")) {
-      const [recipeValue, ...ingredientValues] = searchQuery.split(", ");
-      console.log(recipeValue);
-  
-      setRecipeQuery(recipeValue);
-  
-      const cartIngredients = ingredientValues.join(",+");
-      console.log(cartIngredients);
-  
-      setCartQuery(cartIngredients);
-  
+    e.preventDefault();
+    console.log(recipeValue, ingredientValue, recipeQuery, ingredientQuery);
+    
+    if (recipeValue && ingredientValue) {
+      const ingredients = ingredientValue.replaceAll(/,|\s/g, '+');
+      const recipe = recipeValue.replaceAll(/,|\s/g, '+');
+      setRecipeQuery(recipe);
+      setIngredientQuery(ingredients);
       getRecipes();
-    } else if (searchValue.includes(" ")) {
-      const [recipeValue, ...ingredientValues] = searchValue.split(" ");
-      console.log(recipeValue);
-  
-      setRecipeQuery(recipeValue);
-  
-      const cartIngredients = ingredientValues.join("+");
-      console.log(cartIngredients);
-  
-      setCartQuery(cartIngredients);
-  
+    } else if (recipeValue) {
+      const recipe = recipeValue.replaceAll(/,|\s/g, '+');
+      setRecipeQuery(recipe);
+      setIngredientQuery('');
       getRecipes();
-    } else {
-      // If there are no dish types or ingredients, set both the recipe and cart queries to an empty string
+    } else if (ingredientValue) {
+      const ingredients = ingredientValue.replaceAll(/,|\s/g, '+');
       setRecipeQuery('');
-      setCartQuery('');
-  
+      setIngredientQuery(ingredients);
       getRecipes();
     }
   };
+  
+  
 
       // const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       //   e.preventDefault();
@@ -142,15 +130,15 @@ const Recipes: React.FC<RecipesProps> = (props) => {
       
       //     setRecipeQuery(recipeValue);
       
-      //     const cartIngredients = ingredientValues.join(",+");
-      //     console.log(cartIngredients);
+      //     const ingredientIngredients = ingredientValues.join(",+");
+      //     console.log(ingredientIngredients);
       
-      //     setCartQuery(cartIngredients);
+      //     setingredientQuery(ingredientIngredients);
       
       //     getRecipes();
       //   } else {
-      //     // If there are no ingredients, set the cart query to an empty string
-      //     setCartQuery('');
+      //     // If there are no ingredients, set the ingredient query to an empty string
+      //     setingredientQuery('');
       
       //     setRecipeQuery(searchValue);
       
@@ -164,9 +152,9 @@ const Recipes: React.FC<RecipesProps> = (props) => {
 const getRecipes = async () => {
   console.log(recipeQuery);
   
-console.log(cartQuery);
+console.log(ingredientQuery);
 const data = await fetch(
-  `https://api.spoonacular.com/recipes/complexSearch?query=${recipeQuery}&instructionsRequired=true&addRecipeInformation=true&includeIngredients=${cartQuery}&sortDirection=desc&apiKey=${API_KEY}`
+  `https://api.spoonacular.com/recipes/complexSearch?query=${recipeQuery}&instructionsRequired=true&addRecipeInformation=true&includeIngredients=${ingredientQuery}&sortDirection=desc&apiKey=${API_KEY}`
 );
 const json = await data.json();
 console.log(json.results);
@@ -176,7 +164,7 @@ setSearchData(json.results);
 
 React.useEffect(() => {
   getRecipes();
-}, [recipeQuery, cartQuery]);
+}, [recipeQuery, ingredientQuery]);
 
   return (
     <>
@@ -186,8 +174,10 @@ React.useEffect(() => {
       <RecipeSearch
         firestoreData={firestoreData}
         searchData={searchData}
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
+        recipeValue={recipeValue}
+        setRecipeValue={setRecipeValue}
+        setIngredientValue={setIngredientValue}
+        ingredientValue={ingredientValue}
         getSearch={getSearch}
         user={user}
       />

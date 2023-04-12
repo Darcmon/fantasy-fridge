@@ -4,7 +4,7 @@ import {
   TextInput,
   ActionIcon,
   Button,
-  Group,
+  Paper,
   useMantineTheme,
 } from "@mantine/core";
 import { User } from "firebase/auth";
@@ -15,9 +15,12 @@ interface RecipeSearchProps {
     user: User;
     firestoreData: Ingredient[];
     searchData: Ingredient[];
-    searchValue: string;
-    setSearchValue: (value: string) => void;
+    recipeValue: string;
+    setRecipeValue: (value: string) => void;
     getSearch: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    setIngredientValue: (value: string) => void;
+    ingredientValue: string;
+
 }
 
 const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
@@ -27,9 +30,11 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
         firestoreData,
         user,
         searchData,
-        searchValue,
-        setSearchValue,
+        recipeValue,
+        setRecipeValue,
         getSearch,
+        setIngredientValue,
+        ingredientValue
       } = props;
   const theme = useMantineTheme();
     const navigate = useNavigate();
@@ -79,52 +84,65 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
     cartDraft(firestoreData);
   }, [firestoreData]);
 
-
-
-
+// if (searchData[0].id === 782585) {
+//     return (
+//         <h2>Please enter a valid search query.</h2>
+//     )
+// }
+// else if (!searchData[0].id) {
   return (
     <>
+    <Paper withBorder shadow="md" p={30} mt={30} radius="md">
       <TextInput
         icon={<IconSearch size="1.1rem" stroke={1.5} />}
         radius="xl"
         size="md"
-        rightSection={
-          <ActionIcon
-            size={32}
-            radius="xl"
-            color={theme.primaryColor}
-            variant="filled"
-            onClick={getSearch}
-          >
-            {theme.dir === "ltr" ? (
-              <IconArrowRight size="1.1rem" stroke={1.5} />
-            ) : (
-              <IconArrowLeft size="1.1rem" stroke={1.5} />
-            )}
-          </ActionIcon>
-        }
-        placeholder="Search Recipes.. (e.g pasta, chicken, tomato...)"
+        label="Recipe Name"
+        placeholder="Search Recipes.. (e.g eggplant parmesan)"
         rightSectionWidth={42}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setSearchValue(e.target.value)
+            setRecipeValue(e.target.value)
           }
-        value={searchValue}
+        value={recipeValue}
         {...props}
       />
+      <TextInput
+        icon={<IconSearch size="1.1rem" stroke={1.5} />}
+        radius="xl"
+        size="md"
+        label="Ingredients"
+        placeholder="Included ingredients.. (e.g chicken, tomato...)"
+        rightSectionWidth={42}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setIngredientValue(e.target.value)
+          }
+        value={ingredientValue}
+        {...props}
+      />
+                <Button
+            color="success"
+            onClick={getSearch}
+            variant="gradient"
+            gradient={{ from: "teal", to: "orange" }}
+            fullWidth
+            mt="xl"
+          >
+            Search
+          </Button>
+      </Paper>
       <h2>Recipe Search Results</h2>
       {searchData.map((item: Ingredient) => {
-        const filteredData = firestoreData.filter(
-          (firestoreItem) => firestoreItem.id === item.id
-        );
+        // const filteredData = firestoreData.filter(
+        //   (firestoreItem) => firestoreItem.id === item.id
+        // );
 
         return (
-          <>
             <div key={item.id} onClick={() => navigate(`/recipes/${item.id}`)}>
             <p>
               {item.title}
             </p>
             <p>Source: {item.sourceName} </p>
-            <p> Ready in: {item.readyInMinutes} minutes</p>
+            <p>Ready in: {item.readyInMinutes} minutes</p>
             <p>Servings: {item.servings}</p>
 
             <img
@@ -132,7 +150,6 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
               alt={`${item.name} picture`}
             />
             </div>
-          </>
         );
       })}
     </>
