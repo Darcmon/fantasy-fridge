@@ -16,7 +16,7 @@ const LogoutPage: React.FC<IPageProps> = props => {
     }
 
     return (
-        <AuthContainer header="Logout">
+        <AuthContainer header="">
             <p className='text-center'>Are you sure you want to logout?</p>
             <div className='text-center'>
                 <Button variant="outlined" color='primary' onClick={() => navigate(-1)}>Cancel</Button>

@@ -1,7 +1,7 @@
 import React from "react";
 import { IconSearch, IconArrowRight, IconArrowLeft } from "@tabler/icons-react";
 import {
-  Group,
+  Stack,
   TextInput,
   TextInputProps,
   ActionIcon,
@@ -12,6 +12,7 @@ import {
 import Ingredient from "../../interfaces/page";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import CartEdit from "../CartEdit/CartEdit";
+import FridgeEdit from "../FridgeEdit/FridgeEdit";
 import { User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -87,7 +88,7 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
             onClick={() => navigate(`/ingredients/${item.id}`)}
             >
             <p>
-              {item.name} {item.id}
+              {item.name}
             </p>
 
             <img
@@ -95,33 +96,14 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
               alt={`${item.name} picture`}
             />
             </Anchor>
-            <Group>
-              {filteredData.length > 0 ? (
-                <>
-                  <Button
-                    color="red"
-                    onClick={() => removeFridge(item.id.toString())}
-                    leftIcon={<KitchenIcon />}
-                  >
-                    Rm
-                  </Button>
-                  <Button onClick={() => updateFridge(item.id.toString(), 'subtract')} name='subtract' >-</Button>
-                    <p>{filteredData[0].quantity}</p>
-                  <Button onClick={() => updateFridge(item.id.toString(), 'add')} name='add'>+</Button>
-                </>
-              ) : (
-                <Button
-                  onClick={() => addFridge(item, 0)}
-                  leftIcon={<KitchenIcon />}
-                >
-                  Add
-                </Button>
-              )}
+            <Stack align='center' justify='center'
+                spacing='xl'>
+              <FridgeEdit user={user} item={item}/>
               <CartEdit 
               user={user}
               item={item}
               />
-            </Group>
+            </Stack>
             </div>
           </>
         );
