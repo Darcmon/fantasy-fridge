@@ -95,7 +95,7 @@ const MyFridge: React.FC<MyFridgeProps> = (props) => {
             onClick={() => navigate(`/ingredients/${item.id}`)}
             >
                 <p>
-                  {item.name} {item.id}
+                  {item.name}
                 </p>
                 <img
                   src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}

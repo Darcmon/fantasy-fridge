@@ -37,6 +37,11 @@ const Recipes: React.FC<RecipesProps> = (props) => {
 
   const [firestoreData, setFirestoreData] = React.useState<Ingredient[]>([]);
   const [fridgeEdit, setFridgeEdit] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchData, setSearchData] = React.useState([]);
+  const [cartQuery, setCartQuery] = React.useState(null as string | null);
+    const [recipeQuery, setRecipeQuery] = React.useState(null as string | null);
 
   const { user } = props;
   const { id } = useParams();
@@ -88,6 +93,91 @@ const Recipes: React.FC<RecipesProps> = (props) => {
     fetchData();
   }, [fridgeEdit]);
 
+  const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setSearchQuery(searchValue);
+    setRecipeQuery('');
+    setCartQuery('');
+  
+    if (searchValue.includes(", ")) {
+      const [recipeValue, ...ingredientValues] = searchQuery.split(", ");
+      console.log(recipeValue);
+  
+      setRecipeQuery(recipeValue);
+  
+      const cartIngredients = ingredientValues.join(",+");
+      console.log(cartIngredients);
+  
+      setCartQuery(cartIngredients);
+  
+      getRecipes();
+    } else if (searchValue.includes(" ")) {
+      const [recipeValue, ...ingredientValues] = searchValue.split(" ");
+      console.log(recipeValue);
+  
+      setRecipeQuery(recipeValue);
+  
+      const cartIngredients = ingredientValues.join("+");
+      console.log(cartIngredients);
+  
+      setCartQuery(cartIngredients);
+  
+      getRecipes();
+    } else {
+      // If there are no dish types or ingredients, set both the recipe and cart queries to an empty string
+      setRecipeQuery('');
+      setCartQuery('');
+  
+      getRecipes();
+    }
+  };
+
+      // const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      //   e.preventDefault();
+        
+      //   setSearchQuery(searchValue);
+      
+      //   if (searchValue.includes(", ")) {
+      //     const [recipeValue, ...ingredientValues] = searchQuery.split(", ");
+      //     console.log(recipeValue);
+      
+      //     setRecipeQuery(recipeValue);
+      
+      //     const cartIngredients = ingredientValues.join(",+");
+      //     console.log(cartIngredients);
+      
+      //     setCartQuery(cartIngredients);
+      
+      //     getRecipes();
+      //   } else {
+      //     // If there are no ingredients, set the cart query to an empty string
+      //     setCartQuery('');
+      
+      //     setRecipeQuery(searchValue);
+      
+      //     getRecipes();
+      //   }
+      // };
+      
+  
+  
+  
+const getRecipes = async () => {
+  console.log(recipeQuery);
+  
+console.log(cartQuery);
+const data = await fetch(
+  `https://api.spoonacular.com/recipes/complexSearch?query=${recipeQuery}&instructionsRequired=true&addRecipeInformation=true&includeIngredients=${cartQuery}&sortDirection=desc&apiKey=${API_KEY}`
+);
+const json = await data.json();
+console.log(json.results);
+
+setSearchData(json.results);
+};
+
+React.useEffect(() => {
+  getRecipes();
+}, [recipeQuery, cartQuery]);
+
   return (
     <>
     {!id ? (<>
@@ -95,9 +185,10 @@ const Recipes: React.FC<RecipesProps> = (props) => {
 
       <RecipeSearch
         firestoreData={firestoreData}
-        addFridge={addFridge}
-        removeFridge={removeFridge}
-        updateFridge={updateFridge}
+        searchData={searchData}
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+        getSearch={getSearch}
         user={user}
       />
 

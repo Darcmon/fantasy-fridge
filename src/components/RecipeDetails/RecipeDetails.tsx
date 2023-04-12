@@ -61,7 +61,29 @@ interface RecipeDetailsProps {
 }
 
 interface RecipeDetails {
-    RecipeData: Recipe;
+    recipeData: [
+        {
+            id: number,
+            title: string,
+            image: string,
+            imageType: string,
+            summary: string,
+            instructions: string,
+            readyInMinutes: number,
+            servings: number,
+            sourceUrl: string,
+            spoonacularSourceUrl: string,
+            pricePerServing: number,
+            extendedIngredients: [
+                {
+                    id: number,
+                    aisle: string,
+                    image: string,
+                }
+              ]
+            }
+
+    ];
 }
 
 const RecipeDetails: React.FC<RecipeDetailsProps> = (props) => {
@@ -70,7 +92,7 @@ const RecipeDetails: React.FC<RecipeDetailsProps> = (props) => {
 
   const API_KEY = import.meta.env.VITE_SPOON_API_KEY;
 
-  const [recipeData, setRecipeData] = React.useState<RecipeDetails>([]);
+  const [recipeData, setRecipeData] = React.useState<RecipeDetails>([ { id: 0, title: "", image: "", imageType: "", summary: "", instructions: "", readyInMinutes: 0, servings: 0, sourceUrl: "", spoonacularSourceUrl: "", pricePerServing: 0, extendedIngredients: [{ id: 0, aisle: "", image: "" }] } ] );
 
   // const getRecipes = async () => {
   //     const data = await fetch(

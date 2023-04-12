@@ -14,9 +14,10 @@ import { useNavigate } from "react-router-dom";
 interface RecipeSearchProps {
     user: User;
     firestoreData: Ingredient[];
-    addFridge: (item: Ingredient, quantity: number) => void;
-    removeFridge: (id: string) => void;
-    updateFridge: (id: string, name: string) => void;
+    searchData: Ingredient[];
+    searchValue: string;
+    setSearchValue: (value: string) => void;
+    getSearch: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
@@ -24,16 +25,16 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
 
     const {
         firestoreData,
-        user
+        user,
+        searchData,
+        searchValue,
+        setSearchValue,
+        getSearch,
       } = props;
   const theme = useMantineTheme();
     const navigate = useNavigate();
 
-  const [searchValue, setSearchValue] = React.useState("");
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [searchData, setSearchData] = React.useState([]);
-  const [cartQuery, setCartQuery] = React.useState(null as string | null);
-    const [recipeQuery, setRecipeQuery] = React.useState(null as string | null);
+
   const [cartDraftString, setDraftString] = React.useState<string>("");
 
 
@@ -64,56 +65,7 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
     //     }
     //   };
       
-    const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault();
-      
-        setSearchQuery(searchValue);
-      
-        if (searchValue.includes(", ")) {
-          const [recipeValue, ...ingredientValues] = searchQuery.split(", ");
-          console.log(recipeValue);
-      
-          setRecipeQuery(recipeValue);
-      
-          const cartIngredients = ingredientValues.join(",+");
-          console.log(cartIngredients);
-      
-          setCartQuery(cartIngredients);
-      
-          getRecipes();
-        } else if (searchValue.includes(" ")) {
-          const [recipeValue, ...ingredientValues] = searchValue.split(" ");
-          console.log(recipeValue);
-      
-          setRecipeQuery(recipeValue);
-      
-          const cartIngredients = ingredientValues.join("+");
-          console.log(cartIngredients);
-      
-          setCartQuery(cartIngredients);
-      
-          getRecipes();
-        } else {
-          // If there are no dish types or ingredients, set both the recipe and cart queries to an empty string
-          setRecipeQuery('');
-          setCartQuery('');
-      
-          getRecipes();
-        }
-      };
-      
-      
-      
-  const getRecipes = async () => {
-    console.log(cartQuery);
-    const data = await fetch(
-      `https://api.spoonacular.com/recipes/complexSearch?query=${recipeQuery}&instructionsRequired=true&addRecipeInformation=true&includeIngredients=${cartQuery}&sortDirection=desc&apiKey=${API_KEY}`
-    );
-    const json = await data.json();
-    console.log(json.results);
-    
-    setSearchData(json.results);
-  };
+
 
   const cartDraft = async (firestoreData: Ingredient[]) => {
     let draftString: string = "";
@@ -128,9 +80,7 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
   }, [firestoreData]);
 
 
-  React.useEffect(() => {
-    getRecipes();
-  }, [recipeQuery, cartQuery]);
+
 
   return (
     <>
@@ -171,8 +121,11 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
           <>
             <div key={item.id} onClick={() => navigate(`/recipes/${item.id}`)}>
             <p>
-              {item.title} {item.id} {item.sourceName} Ready in: {item.readyInMinutes} minutes Servings: {item.servings}
+              {item.title}
             </p>
+            <p>Source: {item.sourceName} </p>
+            <p> Ready in: {item.readyInMinutes} minutes</p>
+            <p>Servings: {item.servings}</p>
 
             <img
               src={`${item.image}`}

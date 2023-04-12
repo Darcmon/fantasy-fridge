@@ -11,8 +11,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
 import Ingredient from "../../interfaces/page";
-import { Button, Group, Anchor } from "@mantine/core";
+import { Stack, Anchor } from "@mantine/core";
 import CartEdit from "../CartEdit/CartEdit";
+import FridgeEdit from "../FridgeEdit/FridgeEdit";
 
 interface MyCartProps {
   user: User;
@@ -75,35 +76,22 @@ const MyCart: React.FC<MyCartProps> = (props) => {
             onClick={() => navigate(`/ingredients/${item.id}`)}
             >
             <p>
-              {item.name} {item.id}
+              {item.name}
             </p>
             <img
               src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`}
               alt={`${item.name} picture`}
             />
             </Anchor>
-            <Group>
-              {filteredData.length > 0 ? (
-                <Button
-                  color="red"
-                  onClick={() => removeCart(item.id.toString())}
-                  leftIcon={<KitchenIcon />}
-                >
-                  Rm
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => addCart(item)}
-                  leftIcon={<KitchenIcon />}
-                >
-                  Add
-                </Button>
-              )}
+            <Stack align='center' justify='center'
+          spacing='xl'
+          >
+              <FridgeEdit user={user} item={item}/>
               {/* <Button onClick={() => removeCart(item.id.toString())}>-</Button>
               <p>{filteredData[0].quantity}</p>
               <Button onClick={() => addCart(item)}>+</Button> */}
               <CartEdit user={user} item={item} />
-            </Group>
+              </Stack>
           </div>
         );
       })}
