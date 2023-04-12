@@ -62,7 +62,12 @@ interface IngredientDetailsProps {
 }
 
 interface IngredientDetails {
-    ingredientData: Ingredient;
+    name: string;
+    image: string;
+    id: number;
+    possibleUnits: string[];
+    length: number;
+    item: Ingredient;
 }
 
 const IngredientDetails: React.FC<IngredientDetailsProps> = (props) => {
@@ -137,7 +142,7 @@ const IngredientDetails: React.FC<IngredientDetailsProps> = (props) => {
               }
             >
                 <Text>Possible Units</Text>
-                {ingredientData.possibleUnits.map((unit) => (
+                {ingredientData.possibleUnits.map((unit: string) => (
               <List.Item key={unit}>{unit}</List.Item>
             ))}
 

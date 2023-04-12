@@ -13,9 +13,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
 import Ingredient from "../../interfaces/page";
-import { Stack, Anchor } from "@mantine/core";
-import CardEdit from "../CartEdit/CartEdit";
+import { Stack, Anchor, Grid, } from "@mantine/core";
+import CartEdit from "../CartEdit/CartEdit";
 import FridgeEdit from "../FridgeEdit/FridgeEdit";
+import FeaturesCard from "../IngredientCard/IngredientCard";
 
 interface MyFridgeProps {
   user: User;
@@ -83,13 +84,15 @@ const MyFridge: React.FC<MyFridgeProps> = (props) => {
         <p>No items in your Fridge</p>
       ) : (
         <>
+        <Grid>
           {firestoreData.map((item: Ingredient) => {
             const filteredData = firestoreData.filter(
               (firestoreItem) => firestoreItem.id === item.id
             );
             return (
-              <div key={item.id}>
-                <Anchor
+              <Grid.Col span={4} key={item.id}>
+                <FeaturesCard user={user} item={item}/>
+                {/* <Anchor
             underline={false}
             color = 'black'
             onClick={() => navigate(`/ingredients/${item.id}`)}
@@ -106,11 +109,12 @@ const MyFridge: React.FC<MyFridgeProps> = (props) => {
           spacing='xl'
           >
                   <FridgeEdit user={user} item={item}/>
-                  <CardEdit user={user} item={item} />
-                </Stack>
-              </div>
+                  <CartEdit user={user} item={item} />
+                </Stack> */}
+              </Grid.Col>
             );
           })}
+          </Grid>
         </>
       )}
     </>

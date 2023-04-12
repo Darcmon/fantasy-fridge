@@ -8,6 +8,7 @@ import {
   Button,
   useMantineTheme,
   Anchor,
+  Paper
 } from "@mantine/core";
 import Ingredient from "../../interfaces/page";
 import KitchenIcon from "@mui/icons-material/Kitchen";
@@ -15,6 +16,7 @@ import CartEdit from "../CartEdit/CartEdit";
 import FridgeEdit from "../FridgeEdit/FridgeEdit";
 import { User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { FeaturesCard } from "../IngredientCard/IngredientCard";
 
 
 interface IngredientSearchProps {
@@ -47,6 +49,7 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
 
   return (
     <>
+    <Paper withBorder shadow="md" p={30} mt={30} radius="md">
       <TextInput
         icon={<IconSearch size="1.1rem" stroke={1.5} />}
         radius="xl"
@@ -73,6 +76,7 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
         }
         value={searchValue}
       />
+      </Paper>
       {searchData.length > 0 ? <h2>Search Results</h2> : null}
       {searchData.map((item: Ingredient) => {
         const filteredData = firestoreData.filter(

@@ -72,7 +72,7 @@ const addFridge = async (item: Ingredient, quantity: number) => {
     return ( 
         <>
         {filteredFridgeData.length > 0 ? (
-                    <Stack align='center' justify='center'>
+                    <>
                     <Button
                       color="red"
                       onClick={() => removeFridge(item.id.toString())}
@@ -97,7 +97,7 @@ const addFridge = async (item: Ingredient, quantity: number) => {
                       +
                     </Button>
                     </Group>
-                    </Stack>
+                    </>
               ) : (
                 <Button
                   onClick={() => addFridge(item, 0)}

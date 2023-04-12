@@ -7,7 +7,7 @@ interface FooterDetailsProps {
 const FooterDetails: React.FC<FooterDetailsProps> = () => {
     return ( 
         <div>
-            <p>Pixel Collective</p>
+            <p>Pixel Collective Inc</p>
         </div>
      );
 }

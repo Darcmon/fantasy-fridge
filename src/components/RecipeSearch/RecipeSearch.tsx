@@ -131,6 +131,7 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
           </Button>
       </Paper>
       <h2>Recipe Search Results</h2>
+      {searchData.length > 0 ? <h2>Search Results</h2> : null}
       {searchData.map((item: Ingredient) => {
         // const filteredData = firestoreData.filter(
         //   (firestoreItem) => firestoreItem.id === item.id
