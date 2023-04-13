@@ -76,12 +76,12 @@ const addFridge = async (item: Ingredient, quantity: number) => {
                     <Button
                       color="red"
                       onClick={() => removeFridge(item.id.toString())}
-                      leftIcon={<KitchenIcon />}
-                    >
-                      Rm
-                    </Button>
-                    <Group>
+                      rightIcon={<KitchenIcon />}
+                      compact
+                    ></Button>
+                    <Button.Group>
                     <Button
+                    compact
                       onClick={() =>
                         updateFridge(item.id.toString(), "subtract")
                       }
@@ -89,22 +89,22 @@ const addFridge = async (item: Ingredient, quantity: number) => {
                     >
                       -
                     </Button>
-                    <p>{filteredFridgeData[0].quantity}</p>
+                    <Button compact>{filteredFridgeData[0].quantity}</Button>
                     <Button
+                    compact
                       onClick={() => updateFridge(item.id.toString(), "add")}
                       name="add"
                     >
                       +
                     </Button>
-                    </Group>
+                    </Button.Group>
                     </>
               ) : (
                 <Button
+                compact
                   onClick={() => addFridge(item, 0)}
                   leftIcon={<KitchenIcon />}
-                >
-                  Add
-                </Button>
+                ></Button>
               )}
         </>
      );

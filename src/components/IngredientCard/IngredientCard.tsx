@@ -60,10 +60,12 @@ const FeaturesCard: React.FC<FeaturesCardProps> = ({user, item}) => {
         <Image height={rem(100)} fit='contain' src={`https://spoonacular.com/cdn/ingredients_100x100/${item.image}`} alt={`${item.name} picture`} />
       </Card.Section>
 
-      <Group position="center" mt="md">
+      <Card.Section className={classes.section}>
+        <Group position='center'>
           <Text fw={500}>{item.name}</Text>
-          <Button onClick={() => navigate(`/ingredients/${item.id}`)}>View Ingredient</Button>
+          <Button compact onClick={() => navigate(`/ingredients/${item.id}`)}>View</Button>
       </Group>
+      </Card.Section>
 
       <Card.Section className={classes.section}>
         <Group position='center'>

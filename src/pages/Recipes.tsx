@@ -96,12 +96,15 @@ const Recipes: React.FC<RecipesProps> = (props) => {
 
   const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    console.log(recipeValue, ingredientValue, recipeQuery, ingredientQuery);
+    console.log(recipeValue, ingredientValue);
+    console.log(recipeQuery, ingredientQuery);
+    
     
     if (recipeValue && ingredientValue) {
       const ingredients = ingredientValue.replaceAll(/,|\s/g, '+');
       const recipe = recipeValue.replaceAll(/,|\s/g, '+');
       setRecipeQuery(recipe);
+
       setIngredientQuery(ingredients);
       getRecipes();
     } else if (recipeValue) {
@@ -158,8 +161,9 @@ const data = await fetch(
 );
 const json = await data.json();
 console.log(json.results);
-
 setSearchData(json.results);
+// setIngredientQuery('');
+// setRecipeQuery('');
 };
 
 React.useEffect(() => {

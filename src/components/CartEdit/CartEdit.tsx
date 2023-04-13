@@ -58,22 +58,20 @@ const addCart = async (item: Ingredient) => {
           spacing='xl'
           >
                   <Button
+                  compact
                     color="red"
                     onClick={() => removeCart(item.id.toString())}
-                    leftIcon={<MenuBookIcon />}
-                  >
-                    Rm
-                  </Button>
+                    rightIcon={<MenuBookIcon />}
+                  ></Button>
                   </Stack>
               ) : (
                 <Stack align='center' justify='center'
                 spacing='xl'>
                 <Button
+                compact
                   onClick={() => addCart(item)}
                   leftIcon={<MenuBookIcon />}
-                >
-                  Add
-                </Button>
+                ></Button>
                 </Stack>
               )}
         </>

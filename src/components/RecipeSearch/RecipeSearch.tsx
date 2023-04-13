@@ -93,6 +93,11 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
   return (
     <>
     <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+    <Button radius="xl" size="xl" uppercase variant="gradient"
+            gradient={{ from: "teal", to: "orange" }}
+            fullWidth>
+      FANTASY DRAFT
+    </Button>
       <TextInput
         icon={<IconSearch size="1.1rem" stroke={1.5} />}
         radius="xl"
@@ -130,7 +135,6 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
             Search
           </Button>
       </Paper>
-      <h2>Recipe Search Results</h2>
       {searchData.length > 0 ? <h2>Search Results</h2> : null}
       {searchData.map((item: Ingredient) => {
         // const filteredData = firestoreData.filter(

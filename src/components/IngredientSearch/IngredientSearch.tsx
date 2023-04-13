@@ -16,7 +16,7 @@ import CartEdit from "../CartEdit/CartEdit";
 import FridgeEdit from "../FridgeEdit/FridgeEdit";
 import { User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { FeaturesCard } from "../IngredientCard/IngredientCard";
+import FeaturesCard from "../IngredientCard/IngredientCard";
 
 
 interface IngredientSearchProps {
