@@ -8,7 +8,8 @@ import {
   Button,
   useMantineTheme,
   Anchor,
-  Paper
+  Paper,
+  Grid
 } from "@mantine/core";
 import Ingredient from "../../interfaces/page";
 import KitchenIcon from "@mui/icons-material/Kitchen";
@@ -77,15 +78,18 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
         value={searchValue}
       />
       </Paper>
+      
       {searchData.length > 0 ? <h2>Search Results</h2> : null}
+      <Grid>
       {searchData.map((item: Ingredient) => {
         const filteredData = firestoreData.filter(
           (firestoreItem) => firestoreItem.id === item.id
         );
 
         return (
-          <>
-            <div key={item.id}>
+          <Grid.Col span={4} key={item.id}>
+                <FeaturesCard user={user} item={item}/>
+            {/* <div key={item.id}>
             <Anchor
             underline={false}
             color = 'black'
@@ -108,10 +112,11 @@ const IngredientSearch: React.FC<IngredientSearchProps> = (props) => {
               item={item}
               />
             </Stack>
-            </div>
-          </>
+            </div> */}
+            </Grid.Col>
         );
       })}
+      </Grid>
     </>
   );
 };

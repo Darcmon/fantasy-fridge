@@ -15,7 +15,7 @@ import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
 import Ingredient from "../interfaces/page";
 
-import { Button, Group, useMantineTheme } from "@mantine/core";
+import { Button, Group, useMantineTheme, Paper } from "@mantine/core";
 import IngredientSearch from "../components/IngredientSearch/IngredientSearch";
 import MyFridge from "../components/MyFridge/MyFridge";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
@@ -123,7 +123,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
       />
 
       <h2>My Fantasy Fridge</h2>
-
+  <Paper>
       {firestoreData.length === 0 ? (
         <p>No items in your Fridge</p>
       ) : (
@@ -132,6 +132,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
           // key={user.uid}
         />
       )}
+      </Paper>
     </>) : <IngredientDetails user={user} id={id}/>}
     </>
   );

@@ -14,6 +14,7 @@ import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
 import Ingredient from "../interfaces/page";
 import MyFridge from "../components/MyFridge/MyFridge";
+import Confetti from 'react-confetti'
 
 import {
   TextInput,
@@ -174,7 +175,8 @@ React.useEffect(() => {
     <>
     {!id ? (<>
       <h1>Recipes</h1>
-
+      {/* <Confetti/> */}
+      
       <RecipeSearch
         firestoreData={firestoreData}
         searchData={searchData}
