@@ -33,6 +33,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [searchData, setSearchData] = React.useState([]);
 
+
   const { user } = props;
   const { id } = useParams();
   const theme = useMantineTheme();
@@ -123,7 +124,7 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
       />
 
       <h2>My Fantasy Fridge</h2>
-  <Paper>
+
       {firestoreData.length === 0 ? (
         <p>No items in your Fridge</p>
       ) : (
@@ -132,7 +133,6 @@ const Ingredients: React.FC<IngredientsProps> = (props) => {
           // key={user.uid}
         />
       )}
-      </Paper>
     </>) : <IngredientDetails user={user} id={id}/>}
     </>
   );

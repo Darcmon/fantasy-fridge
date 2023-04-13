@@ -55,26 +55,21 @@ const RecipeCard: React.FC<RecipeCardProps> = ({user, item}) => {
   const navigate = useNavigate();
 
   return (
-    <Card withBorder radius="md" className={classes.card}>
-      <Card.Section className={classes.imageSection}>
-        <Image height={rem(100)} fit='contain' src={`${item.image}`} alt={`${item.name} picture`} />
-      </Card.Section>
+<Card withBorder radius="md" className={classes.card}>
+  <Card.Section className={classes.imageSection}>
+    <Image height={rem(200)} fit='contain' src={item.image} alt={`${item.title} picture`} />
+  </Card.Section>
 
-      <Card.Section className={classes.section}>
-        <Group position='center'>
-          <Text fw={500}>{item.name}</Text>
-          <Button compact onClick={() => navigate(`/recipes/${item.id}`)}>View</Button>
-      </Group>
-      </Card.Section>
+  <Card.Section className={classes.section}>
+    <div onClick={() => navigate(`/recipes/${item.id}`)}>
+      <Text fw={500}>{item.title}</Text>
+      <p>Source: {item.sourceName}</p>
+      <p>Ready in: {item.readyInMinutes} minutes</p>
+      <p>Servings: {item.servings}</p>
+    </div>
+  </Card.Section>
+</Card>
 
-      <Card.Section className={classes.section}>
-        <Group position='center'>
-        <FridgeEdit user={user} item={item}/>
-
-          <CartEdit user={user} item={item} />
-        </Group>
-      </Card.Section>
-    </Card>
   );
 }
 

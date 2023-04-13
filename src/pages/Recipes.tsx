@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { db } from "../config/firebase-config";
 import {
   collection,
@@ -43,13 +43,18 @@ const Recipes: React.FC<RecipesProps> = (props) => {
   const [ingredientQuery, setIngredientQuery] = React.useState(null as string | null);
   // const [searchQuery, setSearchQuery] = React.useState("");
   const [searchData, setSearchData] = React.useState([]);
+  const [searchDraftData, setSearchDraftData] = React.useState([]);
   const [recipeQuery, setRecipeQuery] = React.useState(null as string | null);
+  const [slowTransitionOpened, setSlowTransitionOpened] = React.useState<boolean>(false);
+
+
 
   const { user } = props;
   const { id } = useParams();
   const theme = useMantineTheme();
 
   const userFridgeRef = collection(db, "users", user.uid, "fridge");
+  const userCartRef = collection(db, "users", user.uid, "cart");
 
   const addFridge = async (item: Ingredient) => {
     const userFridgeItemRef = collection(db, "users", user.uid, "fridge");
@@ -120,7 +125,15 @@ const Recipes: React.FC<RecipesProps> = (props) => {
       getRecipes();
     }
   };
+
+  // const getDraftSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  //   e.preventDefault();
+  //     setRecipeQuery('');
+  //     getDraftRecipe();
+  // }
+
   
+
   
 
       // const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -154,18 +167,26 @@ const Recipes: React.FC<RecipesProps> = (props) => {
   
   
 const getRecipes = async () => {
-  console.log(recipeQuery);
-  
-console.log(ingredientQuery);
 const data = await fetch(
   `https://api.spoonacular.com/recipes/complexSearch?query=${recipeQuery}&instructionsRequired=true&addRecipeInformation=true&includeIngredients=${ingredientQuery}&sortDirection=desc&apiKey=${API_KEY}`
 );
 const json = await data.json();
 console.log(json.results);
 setSearchData(json.results);
-// setIngredientQuery('');
-// setRecipeQuery('');
 };
+
+// const getDraftRecipe = async () => {
+//   const data = await fetch(
+//     `https://api.spoonacular.com/recipes/complexSearch?query=&instructionsRequired=true&addRecipeInformation=true&includeIngredients=${ingredientQuery}&sortDirection=desc&apiKey=${API_KEY}`
+//   );
+//   const json = await data.json();
+//   console.log(json.results);
+//   setSearchData(json.results);
+//   };
+
+// React.useEffect(() => {
+//   getDraftRecipe();
+// }, [slowTransitionOpened]);
 
 React.useEffect(() => {
   getRecipes();
@@ -185,6 +206,10 @@ React.useEffect(() => {
         setIngredientValue={setIngredientValue}
         ingredientValue={ingredientValue}
         getSearch={getSearch}
+        slowTransitionOpened={slowTransitionOpened}
+        setSlowTransitionOpened={setSlowTransitionOpened}
+        setIngredientQuery={setIngredientQuery}
+        searchDraftData={searchDraftData}
         user={user}
       />
 

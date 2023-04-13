@@ -6,10 +6,17 @@ import {
   Button,
   Paper,
   useMantineTheme,
+  Modal,
+  Grid
 } from "@mantine/core";
 import { User } from "firebase/auth";
 import { IconSearch } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../config/firebase-config";
+import Confetti from "react-confetti";
+import RecipeCard from "../RecipeCard/RecipeCard";
+import FeatureCard from "../IngredientCard/IngredientCard";
 
 interface RecipeSearchProps {
     user: User;
@@ -20,7 +27,10 @@ interface RecipeSearchProps {
     getSearch: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     setIngredientValue: (value: string) => void;
     ingredientValue: string;
-
+    slowTransitionOpened: boolean;
+    setSlowTransitionOpened: (value: boolean) => void;
+    setIngredientQuery: (value: string) => void;
+    searchDraftData: any;
 }
 
 const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
@@ -34,68 +44,65 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
         setRecipeValue,
         getSearch,
         setIngredientValue,
-        ingredientValue
+        ingredientValue,
+        slowTransitionOpened,
+        setSlowTransitionOpened,
+        setIngredientQuery,
+        searchDraftData
       } = props;
   const theme = useMantineTheme();
     const navigate = useNavigate();
 
-
+    const userCartRef = collection(db, "users", user.uid, "cart");
   const [cartDraftString, setDraftString] = React.useState<string>("");
 
 
-    // const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    //     e.preventDefault();
-      
-    //     setSearchQuery(searchValue);
-      
-    //     if (searchValue.includes(", ")) {
-    //       const [recipeValue, ...ingredientValues] = searchQuery.split(", ");
-    //       console.log(recipeValue);
-      
-    //       setRecipeQuery(recipeValue);
-      
-    //       const cartIngredients = ingredientValues.join(",+");
-    //       console.log(cartIngredients);
-      
-    //       setCartQuery(cartIngredients);
-      
-    //       getRecipes();
-    //     } else {
-    //       // If there are no ingredients, set the cart query to an empty string
-    //       setCartQuery('');
-      
-    //       setRecipeQuery(searchValue);
-      
-    //       getRecipes();
-    //     }
-    //   };
-      
-
-
-  const cartDraft = async (firestoreData: Ingredient[]) => {
-    let draftString: string = "";
-    firestoreData.forEach((ingredient) => {
-      draftString += ingredient.name + " ";
-    });
-    setDraftString(draftString.trim());
-  };
+//   const generateSearchQuery = async (userCartRef: any) => {
+//     const snapshot = await getDocs(userCartRef);
+//     const ingredientNames:[] = [];
   
-  React.useEffect(() => {
-    cartDraft(firestoreData);
-  }, [firestoreData]);
+//     snapshot.forEach((doc: any) => {
+//       const data = doc.data();
+      
+//       ingredientNames.push(data.name);
+//     });
+//     console.log(ingredientNames.join(' '));
+//     setIngredientQuery(ingredientNames.join(' '));
+//   }
 
-// if (searchData[0].id === 782585) {
-//     return (
-//         <h2>Please enter a valid search query.</h2>
-//     )
-// }
-// else if (!searchData[0].id) {
+//   React.useEffect(() => {
+//     generateSearchQuery(userCartRef);
+//   }, [slowTransitionOpened]);
+
+
   return (
     <>
+          <Modal
+        opened={slowTransitionOpened}
+        onClose={() => setSlowTransitionOpened(false)}
+        title="YOUR FANTASY DRAFT"
+        transitionProps={{ transition: 'rotate-left' }}
+      >
+        <Confetti/>
+        <Grid>
+      {searchData.map((item: Ingredient) => {
+        // const filteredData = firestoreData.filter(
+        //   (firestoreItem) => firestoreItem.id === item.id
+        // );
+
+        return (
+            <Grid.Col span={4} key={item.id}>
+            <FeatureCard user={user} item={item}/>
+            </Grid.Col>
+        );
+      })}
+      </Grid>
+        
+      </Modal>
     <Paper withBorder shadow="md" p={30} mt={30} radius="md">
     <Button radius="xl" size="xl" uppercase variant="gradient"
             gradient={{ from: "teal", to: "orange" }}
-            fullWidth>
+            fullWidth onClick={() => setSlowTransitionOpened(true)}>
       FANTASY DRAFT
     </Button>
       <TextInput
@@ -136,13 +143,16 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
           </Button>
       </Paper>
       {searchData.length > 0 ? <h2>Search Results</h2> : null}
+      <Grid>
       {searchData.map((item: Ingredient) => {
         // const filteredData = firestoreData.filter(
         //   (firestoreItem) => firestoreItem.id === item.id
         // );
 
         return (
-            <Anchor
+            <Grid.Col span={4} key={item.id}>
+            <RecipeCard user={user} item={item}/>
+            {/* <Anchor
             underline={false}
             color = 'black'
             key={item.id}
@@ -161,9 +171,11 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
               alt={`${item.name} picture`}
             />
             </div>
-            </Anchor>
+            </Anchor> */}
+            </Grid.Col>
         );
       })}
+      </Grid>
     </>
   );
 };
