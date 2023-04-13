@@ -13,7 +13,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import { User } from "firebase/auth";
 import Ingredient from "../../interfaces/page";
-import { Stack, Anchor, Grid, } from "@mantine/core";
+import { Stack, Anchor, Grid, Button } from "@mantine/core";
 import CartEdit from "../CartEdit/CartEdit";
 import FridgeEdit from "../FridgeEdit/FridgeEdit";
 import FeaturesCard from "../IngredientCard/IngredientCard";
@@ -81,7 +81,18 @@ const MyFridge: React.FC<MyFridgeProps> = (props) => {
   return (
     <>
       {firestoreData.length === 0 ? (
-        <p>No items in your Fridge</p>
+        <>
+        <h2>No items in your Fridge</h2>
+        <Button
+            color="success"
+            onClick={() => navigate("/ingredients")}
+            variant="gradient"
+            gradient={{ from: "teal", to: "orange" }}
+            mt="xl"
+          >
+            Get started here!
+          </Button>
+        </>
       ) : (
         <>
         <Grid>
