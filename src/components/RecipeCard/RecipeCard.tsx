@@ -64,7 +64,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({user, item}) => {
     <div onClick={() => navigate(`/recipes/${item.id}`)}>
       <Text fw={500}>{item.title}</Text>
       <p>Source: {item.sourceName}</p>
-      <p>Ready in: {item.readyInMinutes} minutes</p>
+      {/* <p>Ready in: {item.readyInMinutes} minutes</p> */}
       <p>Servings: {item.servings}</p>
     </div>
   </Card.Section>
