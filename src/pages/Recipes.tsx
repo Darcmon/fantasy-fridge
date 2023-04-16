@@ -175,18 +175,18 @@ console.log(json.results);
 setSearchData(json.results);
 };
 
-// const getDraftRecipe = async () => {
-//   const data = await fetch(
-//     `https://api.spoonacular.com/recipes/complexSearch?query=&instructionsRequired=true&addRecipeInformation=true&includeIngredients=${ingredientQuery}&sortDirection=desc&apiKey=${API_KEY}`
-//   );
-//   const json = await data.json();
-//   console.log(json.results);
-//   setSearchData(json.results);
-//   };
+const getDraftRecipe = async () => {
+  const data = await fetch(
+    `https://api.spoonacular.com/recipes/complexSearch?query=&instructionsRequired=true&addRecipeInformation=true&includeIngredients=${ingredientQuery}&sortDirection=desc&apiKey=${API_KEY}`
+  );
+  const json = await data.json();
+  console.log(json.results);
+  setSearchData(json.results);
+  };
 
-// React.useEffect(() => {
-//   getDraftRecipe();
-// }, [slowTransitionOpened]);
+React.useEffect(() => {
+  getDraftRecipe();
+}, [slowTransitionOpened]);
 
 React.useEffect(() => {
   getRecipes();

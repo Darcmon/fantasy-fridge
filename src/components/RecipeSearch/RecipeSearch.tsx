@@ -92,7 +92,7 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
 
         return (
             <Grid.Col span={4} key={item.id}>
-            <FeatureCard user={user} item={item}/>
+            <RecipeCard user={user} item={item}/>
             </Grid.Col>
         );
       })}
