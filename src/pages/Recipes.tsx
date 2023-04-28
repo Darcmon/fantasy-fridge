@@ -17,11 +17,6 @@ import MyFridge from "../components/MyFridge/MyFridge";
 import Confetti from 'react-confetti'
 
 import {
-  TextInput,
-  TextInputProps,
-  ActionIcon,
-  Button,
-  Group,
   useMantineTheme,
 } from "@mantine/core";
 import RecipeSearch from "../components/RecipeSearch/RecipeSearch";
