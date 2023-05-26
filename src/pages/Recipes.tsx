@@ -120,44 +120,6 @@ const Recipes: React.FC<RecipesProps> = (props) => {
       getRecipes();
     }
   };
-
-  // const getDraftSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-  //   e.preventDefault();
-  //     setRecipeQuery('');
-  //     getDraftRecipe();
-  // }
-
-  
-
-  
-
-      // const getSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      //   e.preventDefault();
-        
-      //   setSearchQuery(searchValue);
-      
-      //   if (searchValue.includes(", ")) {
-      //     const [recipeValue, ...ingredientValues] = searchQuery.split(", ");
-      //     console.log(recipeValue);
-      
-      //     setRecipeQuery(recipeValue);
-      
-      //     const ingredientIngredients = ingredientValues.join(",+");
-      //     console.log(ingredientIngredients);
-      
-      //     setingredientQuery(ingredientIngredients);
-      
-      //     getRecipes();
-      //   } else {
-      //     // If there are no ingredients, set the ingredient query to an empty string
-      //     setingredientQuery('');
-      
-      //     setRecipeQuery(searchValue);
-      
-      //     getRecipes();
-      //   }
-      // };
-      
   
   
   

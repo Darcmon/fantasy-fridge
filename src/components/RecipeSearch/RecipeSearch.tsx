@@ -57,24 +57,6 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
   const [cartDraftString, setDraftString] = React.useState<string>("");
 
 
-//   const generateSearchQuery = async (userCartRef: any) => {
-//     const snapshot = await getDocs(userCartRef);
-//     const ingredientNames:[] = [];
-  
-//     snapshot.forEach((doc: any) => {
-//       const data = doc.data();
-      
-//       ingredientNames.push(data.name);
-//     });
-//     console.log(ingredientNames.join(' '));
-//     setIngredientQuery(ingredientNames.join(' '));
-//   }
-
-//   React.useEffect(() => {
-//     generateSearchQuery(userCartRef);
-//   }, [slowTransitionOpened]);
-
-
   return (
     <>
           <Modal
@@ -86,10 +68,6 @@ const RecipeSearch: React.FC<RecipeSearchProps> = (props) => {
         <Confetti/>
         <Grid>
       {searchData.map((item: Ingredient) => {
-        // const filteredData = firestoreData.filter(
-        //   (firestoreItem) => firestoreItem.id === item.id
-        // );
-
         return (
             <Grid.Col span={4} key={item.id}>
             <RecipeCard user={user} item={item}/>
